@@ -22,8 +22,9 @@ import org.springframework.data.annotation.Id;
 public class GameLogManageEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(length = 20,unique = true,nullable = false,updatable = false)
 	private Long id;
 
-	@Column
+	@Column(length = 300,nullable = false,updatable = false)
 	private String logservicename;
 }
