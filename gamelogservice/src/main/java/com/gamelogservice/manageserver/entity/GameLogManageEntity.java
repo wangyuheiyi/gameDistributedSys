@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "t_gamelog_manage")
 public class GameLogManageEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 20,unique = true,nullable = false,updatable = false)
 	private long id;
 
