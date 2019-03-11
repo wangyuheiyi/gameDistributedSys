@@ -1,8 +1,8 @@
 package com.gamelogservice.manageserver.service;
 
 import com.gamelogservice.manageserver.entity.GameLogManageEntity;
-import com.gamelogservice.service.IBaseService;
+import com.gamelogservice.service.IBaseDbService;
 
-public interface ILogManageService extends IBaseService<GameLogManageEntity>{
+public interface ILogManageService extends IBaseDbService<GameLogManageEntity>{
 
 }
