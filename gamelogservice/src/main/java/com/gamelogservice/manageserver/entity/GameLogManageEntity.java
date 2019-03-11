@@ -6,12 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.springframework.data.annotation.Id;
 
 
 @Data
@@ -23,8 +22,8 @@ public class GameLogManageEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(length = 20,unique = true,nullable = false,updatable = false)
-	private Long id;
+	private long id;
 
-	@Column(length = 300,nullable = false,updatable = false)
+	@Column(length = 300,unique = true,nullable = false,updatable = false)
 	private String logservicename;
 }
