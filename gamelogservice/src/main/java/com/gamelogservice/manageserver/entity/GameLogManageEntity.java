@@ -4,9 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,12 @@ public class GameLogManageEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 20,unique = true,nullable = false,updatable = false)
 	private long id;
+	
+	/** 游戏服代码*/
+	@Column(length = 11,nullable = false,updatable = false)
+	private int gameCode;
 
-	@Column(length = 300,unique = true,nullable = false,updatable = false)
+	/** 日志服名称*/
+	@Column(length = 300,nullable = false)
 	private String logservicename;
 }
