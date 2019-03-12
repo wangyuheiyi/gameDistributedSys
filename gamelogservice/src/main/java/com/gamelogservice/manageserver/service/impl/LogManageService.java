@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Mono;
 
-import com.gamelogservice.manageserver.dao.IGameLogManageDao;
+import com.gamelogservice.manageserver.dao.GameLogManageDao;
 import com.gamelogservice.manageserver.entity.GameLogManageEntity;
 import com.gamelogservice.manageserver.service.ILogManageService;
 
@@ -22,7 +22,7 @@ public class LogManageService implements ILogManageService{
 	
 	/** 加载数据库处理的类*/
 	@Autowired
-	IGameLogManageDao iGameLogManageDao;
+	GameLogManageDao gameLogManageDao;
 
 	/**
 	 * 页面订阅 当存储完成产生了保存后的对象 订阅者获取这个对象
@@ -31,7 +31,7 @@ public class LogManageService implements ILogManageService{
 	public Mono<GameLogManageEntity> add(GameLogManageEntity param)
 			throws Exception {
 		return Mono.<GameLogManageEntity>create(sink->{
-			sink.success(iGameLogManageDao.save(param));
+			sink.success(gameLogManageDao.save(param));
 		});
 	}
 }

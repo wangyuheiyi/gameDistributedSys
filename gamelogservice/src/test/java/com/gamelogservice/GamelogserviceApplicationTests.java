@@ -24,7 +24,7 @@ public class GamelogserviceApplicationTests {
  		.contentType(MediaType.APPLICATION_STREAM_JSON) //声明请求体的数据格式为application/stream+json;
  		.syncBody(gameLogManageEntity)//body方法设置请求体的数据
 //        .body(gameLogManageEntity, GameLogManageEntity.class) //body方法设置请求体的数据
-        .retrieve()
+        .retrieve() //获取返回结果
         .bodyToMono(Void.class);
 		//blockLast方法，顾名思义，在收到最后一个元素前会阻塞，响应式业务场景中慎用
 		testMono.block();
