@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import com.gamelogservice.manageserver.dao.IGameLogManageDao;
+import com.gamelogservice.manageserver.dao.IGameLogManageRepository;
 import com.gamelogservice.manageserver.entity.GameLogManageEntity;
 import com.gamelogservice.manageserver.service.ILogManageService;
 
@@ -22,7 +23,7 @@ public class LogManageService implements ILogManageService{
 	
 	/** 加载数据库处理的类*/
 	@Autowired
-	IGameLogManageDao gameLogManageDao;
+	IGameLogManageRepository iGameLogManageDao;
 
 	/**
 	 * 页面订阅 当存储完成产生了保存后的对象 订阅者获取这个对象
@@ -31,7 +32,20 @@ public class LogManageService implements ILogManageService{
 	public Mono<GameLogManageEntity> add(GameLogManageEntity param)
 			throws Exception {
 		return Mono.<GameLogManageEntity>create(sink->{
-			sink.success(gameLogManageDao.save(param));
+			sink.success(iGameLogManageDao.save(param));
 		});
 	}
+
+	@Override
+	public Flux<GameLogManageEntity> findBySql(int gameCode,String logservicename) throws Exception {
+		return Flux.<GameLogManageEntity>create(sink->{ 
+//			sink.next(iGameLogManageDao.findByGameCodeAndLogservicename(3, "newtest"));
+			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findByGameCodeAndLogservicename(gameCode, logservicename)){
+				sink.next(gameLogManageEntity);
+			}
+			sink.complete();
+		});
+	}
+	
+
 }

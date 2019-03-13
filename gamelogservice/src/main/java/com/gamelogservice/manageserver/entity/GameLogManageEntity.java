@@ -26,7 +26,7 @@ public class GameLogManageEntity {
 	
 	/** 游戏服代码*/
 	@Column(length = 11,nullable = false,updatable = false)
-	private int gameCode;
+	private int gamecode;
 
 	/** 日志服名称*/
 	@Column(length = 300,nullable = false)
