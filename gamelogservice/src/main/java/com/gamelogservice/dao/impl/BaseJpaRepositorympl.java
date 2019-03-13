@@ -9,9 +9,16 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import com.gamelogservice.dao.IBaseJpaRepository;
 
-public class BaseJpaDaoImpl<T,ID extends Serializable> extends SimpleJpaRepository<T,ID> implements IBaseJpaRepository<T,ID>{
+/**
+ * 构建自己的dao层实现
+ * @author Administrator
+ *
+ * @param <T>
+ * @param <ID>
+ */
+public class BaseJpaRepositorympl<T,ID extends Serializable> extends SimpleJpaRepository<T,ID> implements IBaseJpaRepository<T,ID>{
 	private final EntityManager entityManager;
-	public BaseJpaDaoImpl(Class<T> domainClass, EntityManager em) {
+	public BaseJpaRepositorympl(Class<T> domainClass, EntityManager em) {
 		super(domainClass, em);
 		this.entityManager=em;
 	}
