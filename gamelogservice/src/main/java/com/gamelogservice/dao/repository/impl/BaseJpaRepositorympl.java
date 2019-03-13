@@ -1,4 +1,4 @@
-package com.gamelogservice.dao.impl;
+package com.gamelogservice.dao.repository.impl;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import com.gamelogservice.dao.IBaseJpaRepository;
+import com.gamelogservice.dao.repository.IBaseJpaRepository;
 
 /**
  * 构建自己的dao层实现

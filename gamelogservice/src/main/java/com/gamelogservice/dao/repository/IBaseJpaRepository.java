@@ -1,4 +1,4 @@
-package com.gamelogservice.dao;
+package com.gamelogservice.dao.repository;
 
 import java.io.Serializable;
 import java.util.Map;

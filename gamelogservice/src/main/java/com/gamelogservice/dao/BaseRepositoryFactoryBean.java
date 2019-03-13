@@ -14,7 +14,7 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.util.Assert;
 
-import com.gamelogservice.dao.impl.BaseJpaRepositorympl;
+import com.gamelogservice.dao.repository.impl.BaseJpaRepositorympl;
 
 /**
  * 自定义获取数据库实例bean的工厂类 这样可以调用我们自己的工厂实现
@@ -31,6 +31,7 @@ I extends Serializable> extends JpaRepositoryFactoryBean<R, T, I>{
 		super(repositoryInterface);
 	}
 
+	//@SuppressWarnings("rawtypes") 传递参数类型
 	@Override
     protected RepositoryFactorySupport createRepositoryFactory(EntityManager em) {
         return new BaseRepositoryFactory<T,I>(em);
