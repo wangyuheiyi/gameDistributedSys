@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import com.gamelogservice.manageserver.dao.IGameLogManageRepository;
 import com.gamelogservice.manageserver.entity.GameLogManageEntity;
@@ -44,7 +46,7 @@ public class LogManageService implements ILogManageService{
 				sink.next(gameLogManageEntity);
 			}
 			sink.complete();
-		});
+		}).subscribeOn(Schedulers.elastic());
 	}
 	
 

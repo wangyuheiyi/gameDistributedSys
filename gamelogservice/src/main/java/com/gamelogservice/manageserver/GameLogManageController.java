@@ -38,7 +38,8 @@ public class GameLogManageController {
 		return null;
 	 }
 	 
-	 @GetMapping(path = "/findBySql/{gameCode}/{logservicename}",produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	// @GetMapping(path = "/findBySql/{gameCode}/{logservicename}",produces = MediaType.APPLICATION_STREAM_JSON_VALUE) 这种方式返回的json数据流
+	 @GetMapping(path = "/findBySql/{gameCode}/{logservicename}")
 	 public Flux<GameLogManageEntity> findBySql(@PathVariable("gameCode") int gameCode,@PathVariable("logservicename") String logservicename){
 		try {
 			return logManageService.findBySql(gameCode,logservicename);
