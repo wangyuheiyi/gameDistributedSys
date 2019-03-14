@@ -1,5 +1,7 @@
 package com.gamelogservice.service;
 
+import com.gamelogservice.manageserver.entity.GameLogManageEntity;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,4 +14,7 @@ import reactor.core.publisher.Mono;
 public interface IBaseDbService<T> {
 	/** 存储一个数据*/
 	public Mono<T> add(T param) throws Exception;
+	
+	/** 查询全部*/
+	public Flux<T> finaAllInfo() throws Exception;
 }

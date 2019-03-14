@@ -12,6 +12,9 @@ import com.gamelogservice.manageserver.entity.GameLogManageEntity;
  *
  */
 public interface IGameLogManageRepository extends JpaRepository<GameLogManageEntity, Long>{
+	
+	public List<GameLogManageEntity> findByGamecode(int gamecode);
+	
 	/**
 	 * nativeQuery = true，表示用原生的sql语句查询
 	 * ?1、?2表示第一个参数和第二个参数
@@ -21,5 +24,5 @@ public interface IGameLogManageRepository extends JpaRepository<GameLogManageEnt
 	 * @return
 	 */
 	@Query(nativeQuery = true, value = "SELECT * FROM t_gamelog_manage WHERE gamecode = ?1 AND logservicename = ?2")
-	List<GameLogManageEntity> findByGameCodeAndLogservicename(int gameCode, String logservicename);
+	public List<GameLogManageEntity> findByCustomSql(int gameCode, String logservicename);
 }

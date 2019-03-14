@@ -48,4 +48,14 @@ public class GameLogManageController {
 		}
 		return null;
 	 }
+	 
+	 @GetMapping(path = "/findByGameCode/{gameCode}/" ,produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	 public Flux<GameLogManageEntity> findByGameCode(@PathVariable("gameCode") int gameCode){
+		try {
+			return logManageService.findByGameCode(gameCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	 }
 }

@@ -37,11 +37,39 @@ public class LogManageService implements ILogManageService{
 		});
 	}
 
+	/**
+	 * 根据自定义的sql查询
+	 */
 	@Override
 	public Flux<GameLogManageEntity> findBySql(int gameCode,String logservicename) throws Exception {
 		return Flux.<GameLogManageEntity>create(sink->{ 
-//			sink.next(iGameLogManageDao.findByGameCodeAndLogservicename(3, "newtest"));
-			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findByGameCodeAndLogservicename(gameCode, logservicename)){
+			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findByCustomSql(gameCode, logservicename)){
+				sink.next(gameLogManageEntity);
+			}
+			sink.complete();
+		}).subscribeOn(Schedulers.elastic());
+	}
+
+	/**
+	 * 查询所有数据
+	 */
+	@Override
+	public Flux<GameLogManageEntity> finaAllInfo() throws Exception {
+		return Flux.<GameLogManageEntity>create(sink->{ 
+			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findAll()){
+				sink.next(gameLogManageEntity);
+			}
+			sink.complete();
+		}).subscribeOn(Schedulers.elastic());
+	}
+
+	/**
+	 * 根据游戏id查询所有数据
+	 */
+	@Override
+	public Flux<GameLogManageEntity> findByGameCode(int gameCode) {
+		return Flux.<GameLogManageEntity>create(sink->{ 
+			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findByGamecode(gameCode)){
 				sink.next(gameLogManageEntity);
 			}
 			sink.complete();
