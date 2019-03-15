@@ -19,10 +19,11 @@ public class GamelogserviceApplicationTests {
 	@Test
 	public void testAddLogManageService() {
 		GameLogManageEntity gameLogManageEntity=new GameLogManageEntity();
-		gameLogManageEntity.setId(1);
-		gameLogManageEntity.setLogservicename("wangyu1");
+		gameLogManageEntity.setGamecode(3);
+		gameLogManageEntity.setLogservicename("测试");
+		gameLogManageEntity.setGamename("新测试");
 		WebClient webClient = WebClient.create("http://localhost:8080");
-		Mono<Void> testMono=webClient.post().uri("/logManage")
+		Mono<Void> testMono=webClient.post().uri("/logManage/saveInfo")
  		.contentType(MediaType.APPLICATION_STREAM_JSON) //声明请求体的数据格式为application/stream+json;
  		.syncBody(gameLogManageEntity)//body方法设置请求体的数据
 //        .body(gameLogManageEntity, GameLogManageEntity.class) //body方法设置请求体的数据

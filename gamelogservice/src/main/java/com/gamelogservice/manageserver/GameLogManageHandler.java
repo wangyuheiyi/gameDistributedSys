@@ -20,14 +20,14 @@ public class GameLogManageHandler {
 	
 	public Mono<ServerResponse> saveInfo(ServerRequest request){
 		Mono<GameLogManageEntity> gameLogManage=request.bodyToMono(GameLogManageEntity.class).flatMap(param->logManageService.saveInfo(param));
-		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
+		return ServerResponse.ok().contentType(MediaType.APPLICATION_STREAM_JSON)
                 .body(gameLogManage, GameLogManageEntity.class);
 	}
 	
 	public Mono<ServerResponse> findByGameCode(ServerRequest request){
-		int gamecode=Integer.valueOf(request.pathVariable("gamecode"));
+		int gamecode=Integer.valueOf(request.pathVariable("gameCode"));
 		Flux<GameLogManageEntity> infoFlux = logManageService.findByGameCode(gamecode);
-		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
+		return ServerResponse.ok().contentType(MediaType.APPLICATION_STREAM_JSON)
                 .body(infoFlux, GameLogManageEntity.class);
 	}
 }
