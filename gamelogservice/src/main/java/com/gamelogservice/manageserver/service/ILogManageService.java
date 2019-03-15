@@ -9,5 +9,5 @@ public interface ILogManageService extends IBaseDbService<GameLogManageEntity>{
 	/** 根据游戏id查询所有的服务*/
 	public Flux<GameLogManageEntity> findByGameCode(int gameCode);
 	/** 根据sql查询出玩家信息*/
-	public Flux<GameLogManageEntity> findBySql(int gameCode,String logservicename) throws Exception;
+	public Flux<GameLogManageEntity> findBySql(int gameCode,String logservicename);
 }

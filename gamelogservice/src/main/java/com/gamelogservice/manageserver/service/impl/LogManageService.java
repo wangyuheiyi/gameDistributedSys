@@ -28,8 +28,7 @@ public class LogManageService implements ILogManageService{
 
 	
 	@Override
-	public Mono<GameLogManageEntity> saveInfo(GameLogManageEntity param)
-			throws Exception {
+	public Mono<GameLogManageEntity> saveInfo(GameLogManageEntity param){
 		return Mono.<GameLogManageEntity>create(sink->{
 			sink.success(iGameLogManageDao.save(param));
 		});
@@ -39,7 +38,7 @@ public class LogManageService implements ILogManageService{
 	 * 根据自定义的sql查询
 	 */
 	@Override
-	public Flux<GameLogManageEntity> findBySql(int gameCode,String logservicename) throws Exception {
+	public Flux<GameLogManageEntity> findBySql(int gameCode,String logservicename){
 		return Flux.<GameLogManageEntity>create(sink->{ 
 			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findByCustomSql(gameCode, logservicename)){
 				sink.next(gameLogManageEntity);
@@ -52,7 +51,7 @@ public class LogManageService implements ILogManageService{
 	 * 查询所有数据
 	 */
 	@Override
-	public Flux<GameLogManageEntity> finaAllInfo() throws Exception {
+	public Flux<GameLogManageEntity> finaAllInfo(){
 		return Flux.<GameLogManageEntity>create(sink->{ 
 			for(GameLogManageEntity gameLogManageEntity:iGameLogManageDao.findAll()){
 				sink.next(gameLogManageEntity);
@@ -76,8 +75,7 @@ public class LogManageService implements ILogManageService{
 
 
 	@Override
-	public Mono<GameLogManageEntity> delete(GameLogManageEntity param)
-			throws Exception {
+	public Mono<GameLogManageEntity> delete(GameLogManageEntity param){
 		// TODO Auto-generated method stub
 		return null;
 	}
