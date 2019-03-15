@@ -26,11 +26,9 @@ public class LogManageService implements ILogManageService{
 	@Autowired
 	IGameLogManageRepository iGameLogManageDao;
 
-	/**
-	 * 页面订阅 当存储完成产生了保存后的对象 订阅者获取这个对象
-	 */
+	
 	@Override
-	public Mono<GameLogManageEntity> add(GameLogManageEntity param)
+	public Mono<GameLogManageEntity> saveInfo(GameLogManageEntity param)
 			throws Exception {
 		return Mono.<GameLogManageEntity>create(sink->{
 			sink.success(iGameLogManageDao.save(param));
@@ -75,6 +73,12 @@ public class LogManageService implements ILogManageService{
 			sink.complete();
 		}).subscribeOn(Schedulers.elastic());
 	}
-	
 
+
+	@Override
+	public Mono<GameLogManageEntity> delete(GameLogManageEntity param)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

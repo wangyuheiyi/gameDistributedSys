@@ -31,7 +31,7 @@ public class GameLogManageController {
 	 @PostMapping(path = "",consumes = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	 public Mono<Void> addGameLogManage(@RequestBody GameLogManageEntity param){
 		try {
-			return logManageService.add(param).then();
+			return logManageService.saveInfo(param).then();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -13,8 +13,9 @@ import reactor.core.publisher.Mono;
  */
 public interface IBaseDbService<T> {
 	/** 存储一个数据*/
-	public Mono<T> add(T param) throws Exception;
-	
+	public Mono<T> saveInfo(T param) throws Exception;
 	/** 查询全部*/
 	public Flux<T> finaAllInfo() throws Exception;
+	/** 删除一个数据*/
+	public Mono<T> delete(T param) throws Exception;
 }
