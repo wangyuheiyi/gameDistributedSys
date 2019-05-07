@@ -125,7 +125,7 @@
 	        	dataInfo:Object
 	        },
 	        mounted:function(){
-	        	var url = "/findByGameCode/"+gameCode;
+	        	var url = "/findByGameCodeMongo/"+gameCode;
 	        	_this= this;
 	        	axios.get(url).then(function(result) {
 	        		reqAfterInfo(_this,result);
@@ -136,7 +136,7 @@
 	        		this.isCreat=false;
 	            },
 	            saveInfo: function () {
-	            	var url = "/saveInfo/";
+	            	var url = "/saveInfoMongo/";
 	            	_this= this;
 	            	axios.post(url,_this.dataInfo).then(function(result) {
 	            		reqAfterInfo(_this,result);
