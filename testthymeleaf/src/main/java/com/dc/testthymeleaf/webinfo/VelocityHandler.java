@@ -3,7 +3,6 @@ package com.dc.testthymeleaf.webinfo;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -13,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import com.dc.testthymeleaf.bean.ResInfoBean;
 import com.dc.testthymeleaf.entity.GameLogManageEntity;
+import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 import com.dc.testthymeleaf.mytest.TestVelocity;
 import com.dc.testthymeleaf.service.LogManagerService;
 
@@ -53,5 +53,27 @@ public class VelocityHandler {
 		int gamecode=Integer.valueOf(serverRequest.pathVariable("gameCode"));
 		return ok().contentType(MediaType.APPLICATION_STREAM_JSON).
 				body(logManagerService.findByGamecode(gamecode),ResInfoBean.class);
-	} 
+	}
+	
+	/**
+	 * 保存数据
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> saveInfoMongo(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+		.flatMap(param-> ok().contentType(MediaType.APPLICATION_STREAM_JSON).
+				body(logManagerService.saveInfoByMongo(param), ResInfoBean.class));
+	}
+	
+	/**
+	 * 查询数据
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> getInfoByGameCodeMongo(ServerRequest serverRequest){
+		int gamecode=Integer.valueOf(serverRequest.pathVariable("gameCode"));
+		return ok().contentType(MediaType.APPLICATION_STREAM_JSON).
+				body(logManagerService.findByGamecodeMongo(gamecode),ResInfoBean.class);
+	}
 }
