@@ -79,7 +79,8 @@ public class LogManagerService {
 	
 	public Mono<ResInfoBean> findByGamecodeMongo(int gameCode){
 		return logManageMongoRepository.findByGamecode(gameCode)
-				.flatMap(info-> Mono.just(new ResInfoBean(0,"save is ok",info)))
-				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
+				.defaultIfEmpty(new LogManageMongoEntity())
+				.flatMap(info-> Mono.just(new ResInfoBean(0,"get data info ok",info)))
+				.onErrorResume(e-> {return Mono.just(new ResInfoBean(1,"get data info error ! :["+e.getMessage()+"]",new LogManageMongoEntity()));});
 	}
 }

@@ -109,7 +109,7 @@
 		      		<i-button  type="info" @click="saveInfo" >保存</i-button>
 		      	</div>
 		      </Card>
-		      <Card title="日志信息" icon="ios-list-box" :padding="0" shadow style="width: 100%;">
+		      <Card title="日志文件" icon="md-list" :padding="0" shadow style="width: 100%;">
 		      </Card>
 		    </div>
 	     </transition>
@@ -128,6 +128,7 @@
 	        	var url = "/findByGameCodeMongo/"+gameCode;
 	        	_this= this;
 	        	axios.get(url).then(function(result) {
+	        		console.log(result);
 	        		reqAfterInfo(_this,result);
 	        	});
 	        },
@@ -155,7 +156,7 @@
         		_this.dataInfo.gamecode=gameCode;
         		_this.dataInfo.gamename='临时';
         		logManageId=_this.dataInfo.id;
-        		if(_this.dataInfo.id==0)
+        		if(_this.dataInfo.id==null)
         			_this.isCreat=true;
         		else
         			_this.isCreat=false;

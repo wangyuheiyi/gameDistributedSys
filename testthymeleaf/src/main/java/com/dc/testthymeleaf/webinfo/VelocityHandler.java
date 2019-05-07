@@ -73,7 +73,8 @@ public class VelocityHandler {
 	 */
 	public Mono<ServerResponse> getInfoByGameCodeMongo(ServerRequest serverRequest){
 		int gamecode=Integer.valueOf(serverRequest.pathVariable("gameCode"));
+		Mono<ResInfoBean> resinfo=logManagerService.findByGamecodeMongo(gamecode);
 		return ok().contentType(MediaType.APPLICATION_STREAM_JSON).
-				body(logManagerService.findByGamecodeMongo(gamecode),ResInfoBean.class);
+				body(resinfo,ResInfoBean.class);
 	}
 }

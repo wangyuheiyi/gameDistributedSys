@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
+@Document(collection = "logmanage")
 public class LogManageMongoEntity {
 	@Id
     private String id;
