@@ -1,0 +1,27 @@
+package com.dc.testthymeleaf.webinfo;
+
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+@Configuration
+public class RouterConfig {
+	@Autowired
+    private VelocityHandler velocityHandler;
+	
+	 @Bean
+     public RouterFunction<ServerResponse> timerRouter() {
+//		 return RouterFunctions.route(RequestPredicates.GET("/init").and(predicatesAccept),velocityHandler::initInfo)
+//				 .andRoute(RequestPredicates.GET("/creatFile").and(predicatesAccept), velocityHandler::creatFile);
+		 
+		 return route(GET("/init").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::initInfo)
+				 .andRoute(GET("/findByGameCode/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCode)
+				 .andRoute(POST("/saveInfo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfo);
+	 }
+}

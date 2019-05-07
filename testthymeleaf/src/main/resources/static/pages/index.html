@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>日志管理页面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- import Vue.js -->
+	<script src="//vuejs.org/js/vue.min.js"></script>
+	<!-- import stylesheet -->
+	<link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+	<!-- import iView -->
+	<script src="//unpkg.com/iview/dist/iview.min.js"></script>
+	<script src="//unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<style scoped>
+	.fade-enter-active, .fade-leave-active {
+	  transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	  opacity: 0;
+	}
+</style>
+	<div id="managerInfo">
+		<div style="padding: 10px;background: #f8f8f9">
+	 	<transition name="fade">
+	     	<i-button type="info" @click="creatNew" v-if="isCreat">添加数据</i-button>
+		    <div v-else>
+		      <Card title="日志信息" icon="ios-options" :padding="0" shadow style="width: 100%;">
+		      	<div style="padding:10px;">
+			      	<Row class="code-row-bg">
+			      		<i-col span="2">数据id:</i-col>
+			      		<i-col span="6">{{dataInfo.id}}</i-col>
+			      		<i-col span="1"></i-col>
+       					<i-col span="15">数据库自动生成id</i-col>
+			      	</Row>
+			      	<Row class="code-row-bg">
+			      		<i-col span="2">游戏码:</i-col>
+			      		<i-col span="6">{{dataInfo.gamecode}}</i-col>
+			      		<i-col span="1"></i-col>
+       					<i-col span="15">游戏代码</i-col>
+			      	</Row>
+			      	<Row class="code-row-bg">
+			      		<i-col span="2">游戏名称:</i-col>
+			      		<i-col span="22">{{dataInfo.gamename}}</i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">日志服务名称：</i-col>
+			      		<i-col span="6"><i-input  placeholder="日志服务名称" v-model="dataInfo.logservicename" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Divider orientation="left">发送服务的信息</Divider>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">发送服务项目名称：</i-col>
+			      		<i-col span="6"><i-input  placeholder="发送服务项目名称" v-model="dataInfo.sendObjName" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">发送服务代码命名空间：</i-col>
+			      		<i-col span="6"><i-input  placeholder="发送服务中服务代码命名空间：" v-model="dataInfo.sendServicePackage" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">发送实体类代码命名空间：</i-col>
+			      		<i-col span="6"><i-input  placeholder="发送服务中实体类代码命名空间：" v-model="dataInfo.sendBeanPackage" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">日志消息流的通道名：</i-col>
+			      		<i-col span="6"><i-input  placeholder="日志消息流的通道名：" v-model="dataInfo.channelName" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">执行的命令文件：</i-col>
+			      		<i-col span="6"><i-input  placeholder="mvncom.bat or mvncom.sh" v-model="dataInfo.mvnCom" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">代码版本：</i-col>
+			      		<i-col span="6"><i-input  placeholder="0.0.1-RELEASE" v-model="dataInfo.codeVersion" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">代码GroupId：</i-col>
+			      		<i-col span="6"><i-input  placeholder="com.dc" v-model="dataInfo.codeGroupId" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">代码ArtifactId：</i-col>
+			      		<i-col span="6"><i-input  placeholder="autosendrmq" v-model="dataInfo.codeArtifactId" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">mavenId：</i-col>
+			      		<i-col span="6"><i-input  placeholder="与maven配置中的一致" v-model="dataInfo.mavenId" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">release版本上传路径：</i-col>
+			      		<i-col span="6"><i-input  placeholder="http://111.230.26.190:8081/repository/maven-releases/" v-model="dataInfo.releaseMavenPath" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">snapshot版本上传路径：</i-col>
+			      		<i-col span="6"><i-input  placeholder="http://111.230.26.190:8081/repository/maven-snapshots/" v-model="dataInfo.snapshotMavenPath" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+		      	</div>
+		      	<div style="padding:10px;">
+		      		<i-button  type="info" @click="saveInfo" >保存</i-button>
+		      	</div>
+		      </Card>
+		      <Card title="日志信息" icon="ios-list-box" :padding="0" shadow style="width: 100%;">
+		      </Card>
+		    </div>
+	     </transition>
+     	</div>
+	</div>
+	<script>
+		var gameCode=6;
+	    new Vue({
+	        el: '#managerInfo',
+	        data: {
+	        	name: "",
+	        	isCreat:false,
+	        	dataInfo:Object
+	        },
+	        mounted:function(){
+	        	var url = "/findByGameCode/"+gameCode;
+	        	_this= this;
+	        	axios.get(url).then(function(result) {
+	        		reqAfterInfo(_this,result);
+	        	});
+	        },
+	        methods: {
+	        	creatNew: function () {
+	        		this.isCreat=false;
+	            },
+	            saveInfo: function () {
+	            	var url = "/saveInfo/";
+	            	_this= this;
+	            	axios.post(url,_this.dataInfo).then(function(result) {
+	            		reqAfterInfo(_this,result);
+	            	});
+	            }
+	        }
+	    });
+	    
+	    function reqAfterInfo(_this,result){
+	    	 console.log(result.data);
+    		 var res=result.data;
+    		 if(res.status == "0"){
+    			_this.$Message.success(res.resStr);
+    			console.log(res.resDate);
+    			_this.dataInfo = res.resDate;
+        		_this.dataInfo.gamecode=gameCode;
+        		_this.dataInfo.gamename='临时';
+        		logManageId=_this.dataInfo.id;
+        		if(_this.dataInfo.id==0)
+        			_this.isCreat=true;
+        		else
+        			_this.isCreat=false;
+    		 }else{
+    			 _this.$Message.error(res.resStr);
+    		 }
+	    }
+    </script>
+</body>
+</html>
