@@ -31,16 +31,13 @@ public class LogBeanMongoEntity {
 	private String beanName;
 	
 	/** 实体类描述*/
-	@Column(length = 100)
 	private String beanDescribe;
 	
 	/** 基类名称*/
-	@Column(length = 100)
 	private String fatherBeanName;
 	
 	/** 是否是基类*/
-	@Column(length = 11)
-	private int isBaseBean;
+	private boolean isBaseBean;
 	
 	@Override
 	public String toString(){

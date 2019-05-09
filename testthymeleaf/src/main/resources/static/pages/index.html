@@ -7,22 +7,12 @@
 	<script src="//vuejs.org/js/vue.min.js"></script>
 	<!-- import stylesheet -->
 	<link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+	<link rel="stylesheet" href="./css/main.css">
 	<!-- import iView -->
 	<script src="//unpkg.com/iview/dist/iview.min.js"></script>
 	<script src="//unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-<style scoped>
-	.fade-enter-active, .fade-leave-active {
-	  transition: opacity .5s;
-	}
-	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	  opacity: 0;
-	}
-	.listinfo {
-	  list-style: none;
-	}
-</style>
 	<div id="managerInfo">
 		<div style="padding: 20px;background: #f8f8f9">
 	 	<transition name="fade">
@@ -127,9 +117,9 @@
 		       					<i-col span="1">基类名称:</i-col>
 		       					<i-col span="3"><i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input></i-col>
 		       					<i-col span="1">是否基类:</i-col>
-		       					<i-col span="3"><i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input></i-col>
+		       					<i-col span="3"><i-switch v-model="logBean.isBaseBean"></i-switch></i-col>
 		       					<i-col span="1">操作:</i-col>
-		       					<i-col span="2"><i-button type="success">保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
+		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
 					    </Row>
 					    <Panel name="logBean.beanName">
 					    	{{logBean.beanName}}
@@ -141,77 +131,7 @@
 	     </transition>
      	</div>
 	</div>
-	<script>
-		var gameCode=6;
-	    new Vue({
-	        el: '#managerInfo',
-	        data: {
-	        	name: "",
-	        	isCreat:false,
-	        	dataInfo:Object,
-	        	tmpinfoIndex:1,
-	        	logBeans:[]
-	        },
-	        mounted:function(){
-	        	var url = "/findByGameCodeMongo/"+gameCode;
-	        	_this= this;
-	        	axios.get(url).then(function(result) {
-	        		reqAfterInfo(_this,result);
-	        	});
-	        },
-	        methods: {
-	        	creatNew: function () {
-	        		this.isCreat=false;
-	            },
-	            saveInfo: function () {
-	            	var url = "/saveInfoMongo/";
-	            	_this= this;
-	            	axios.post(url,_this.dataInfo).then(function(result) {
-	            		reqAfterInfo(_this,result);
-	            	});
-	            },
-	            addlogBean: function (){
-	            	this.logBeans.push({
-	            		id: "",
-	            		logManageId: this.dataInfo.id,
-	            		beanName: "newbean"+this.tmpinfoIndex,
-	            		beanDescribe: "",
-	            		fatherBeanName: "",
-	            		isBaseBean: 0
-	                });
-	            	this.tmpinfoIndex++;
-	            }
-	        }
-	    });
-	    
-	    //主信息请求后的操作
-	    function reqAfterInfo(_this,result){
-    		 var res=result.data;
-    		 if(res.status == "0"){
-    			_this.$Message.success(res.resStr);
-    			_this.dataInfo = res.resDate;
-        		if(_this.dataInfo.id==null){
-        			_this.isCreat=true;
-        			_this.dataInfo.gamecode=gameCode;
-            		_this.dataInfo.gamename='临时';
-        		}
-        		else{
-        			_this.isCreat=false;
-        			getLogBeanInfo(_this,_this.dataInfo.id);
-        		}
-    		 }else{
-    			 _this.$Message.error(res.resStr);
-    		 }
-	    }
-	    
-	    function getLogBeanInfo(_this,logManageId){
-	    	var url = "/findBylogBean/"+logManageId;
-	    	axios.get(url).then(function(result) {
-        		console.log(result.data);
-        		if(result.data.id!=null)
-        			_this.logBeans.push(result.data);
-        	});
-	    }
-    </script>
+	<!-- js加载要写在html对象加载之后 -->
+	<script src="../js/main.js"></script>
 </body>
 </html>

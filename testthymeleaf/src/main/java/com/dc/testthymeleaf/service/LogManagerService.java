@@ -111,4 +111,10 @@ public class LogManagerService {
 		   			return Flux.just(new LogBeanMongoEntity());
 		   		});
 	}
+	
+	public Mono<ResInfoBean> saveLogBeanMongo(LogBeanMongoEntity logBeanMongoEntity){
+		return logBeanMongoRepository.save(logBeanMongoEntity)
+				.flatMap(info-> Mono.just(new ResInfoBean(0,"save is ok",info)))
+				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogBeanMongoEntity())));
+	}
 }

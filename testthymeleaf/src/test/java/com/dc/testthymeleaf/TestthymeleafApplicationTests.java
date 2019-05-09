@@ -9,8 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
 
-import com.dc.testthymeleaf.bean.ResInfoBean;
-import com.dc.testthymeleaf.entity.GameLogManageEntity;
+import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,17 +37,17 @@ public class TestthymeleafApplicationTests {
 //		testMono.block();
 //	}
 
-	@Test
-	public void contextLoads1() {
-		WebClient webClient = WebClient.create("http://localhost:8091");
-		webClient.get().uri("/findByGameCodeMongo/6")
-//        .body(gameLogManageEntity, GameLogManageEntity.class) //body方法设置请求体的数据
-        .retrieve() //获取返回结果
-        .bodyToMono(ResInfoBean.class).doOnNext(res-> {
-			System.out.println("===========================");
-			System.out.println(res.getStatus());
-			System.out.println(res.getResStr());
-		}).block();
+//	@Test
+//	public void contextLoads1() {
+//		WebClient webClient = WebClient.create("http://localhost:8091");
+//		webClient.get().uri("/findByGameCodeMongo/6")
+////        .body(gameLogManageEntity, GameLogManageEntity.class) //body方法设置请求体的数据
+//        .retrieve() //获取返回结果
+//        .bodyToMono(ResInfoBean.class).doOnNext(res-> {
+//			System.out.println("===========================");
+//			System.out.println(res.getStatus());
+//			System.out.println(res.getResStr());
+//		}).block();
 		//blockLast方法，顾名思义，在收到最后一个元素前会阻塞，响应式业务场景中慎用
 //		testMono.subscribe(res-> {
 //			System.out.println("===========================");
@@ -56,5 +55,23 @@ public class TestthymeleafApplicationTests {
 //			System.out.println(res.getResStr());
 //		});
 //		testMono.block();
+//	}
+	
+	@Test
+	public void contextLoads3() {
+		LogBeanMongoEntity logBeanMongoEntity=new LogBeanMongoEntity();
+		logBeanMongoEntity.setLogManageId("fsdfsd");
+		logBeanMongoEntity.setBeanName("wangyu");
+		logBeanMongoEntity.setBaseBean(true);
+		WebClient webClient = WebClient.create("http://localhost:8091");
+		Mono<String> testMono=webClient.post().uri("/saveLogBean")
+ 		.contentType(MediaType.APPLICATION_STREAM_JSON) //声明请求体的数据格式为application/stream+json;
+ 		.syncBody(logBeanMongoEntity)//body方法设置请求体的数据
+//        .body(gameLogManageEntity, GameLogManageEntity.class) //body方法设置请求体的数据
+        .retrieve() //获取返回结果
+        .bodyToMono(String.class);
+		//blockLast方法，顾名思义，在收到最后一个元素前会阻塞，响应式业务场景中慎用
+		testMono.subscribe(System.out::println);
+		testMono.block();
 	}
 }

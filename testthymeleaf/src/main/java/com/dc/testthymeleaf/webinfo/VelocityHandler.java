@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import com.dc.testthymeleaf.bean.ResInfoBean;
@@ -86,7 +87,19 @@ public class VelocityHandler {
 	 */
 	public Mono<ServerResponse> getLogBeanByManageId(ServerRequest serverRequest){
 		String logManageId=serverRequest.pathVariable("logManageId");
-		return ok().contentType(MediaType.APPLICATION_STREAM_JSON).
+		return ok().contentType(MediaType.APPLICATION_JSON).
 				body(logManagerService.findByLogManageId(logManageId),LogBeanMongoEntity.class);
 	}
+	
+	/**
+	 * 插入日志数据对象
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> saveLogBean(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogBeanMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(logManagerService.saveLogBeanMongo(param), ResInfoBean.class));
+	}
+	
 }
