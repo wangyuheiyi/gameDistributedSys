@@ -1,14 +1,20 @@
 package com.dc.testthymeleaf.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import com.dc.testthymeleaf.TestthymeleafApplication;
 import com.dc.testthymeleaf.bean.ResInfoBean;
 import com.dc.testthymeleaf.dao.IGameLogManageRepository;
+import com.dc.testthymeleaf.dao.ILogBeanMongoRepository;
 import com.dc.testthymeleaf.dao.ILogManageMongoRepository;
 import com.dc.testthymeleaf.entity.GameLogManageEntity;
+import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 
 /**
@@ -19,6 +25,7 @@ import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 @Service
 public class LogManagerService {
 
+	private static Logger logger=LoggerFactory.getLogger(TestthymeleafApplication.class);
 	/** jpamysql*/
 	@Autowired 
 	IGameLogManageRepository gameLogManageRepository;
@@ -26,6 +33,8 @@ public class LogManagerService {
 	/** mongoDb*/
 	@Autowired
 	ILogManageMongoRepository logManageMongoRepository;
+	@Autowired
+	ILogBeanMongoRepository logBeanMongoRepository;
 	
 	/**
 	 * 保存数据库数据
@@ -77,10 +86,29 @@ public class LogManagerService {
 				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
 	}
 	
+	/**
+	 * 查询数据库中的数据MongoDB
+	 * @param gameCode
+	 * @return
+	 */
 	public Mono<ResInfoBean> findByGamecodeMongo(int gameCode){
 		return logManageMongoRepository.findByGamecode(gameCode)
 				.defaultIfEmpty(new LogManageMongoEntity())
 				.flatMap(info-> Mono.just(new ResInfoBean(0,"get data info ok",info)))
 				.onErrorResume(e-> {return Mono.just(new ResInfoBean(1,"get data info error ! :["+e.getMessage()+"]",new LogManageMongoEntity()));});
+	}
+	
+	/**
+	 * 获取游戏对象的列表
+	 * @param logManageId
+	 * @return
+	 */
+	public Flux<LogBeanMongoEntity> findByLogManageId(String logManageId){
+		return logBeanMongoRepository.findByLogManageId(logManageId)
+		   		.defaultIfEmpty(new LogBeanMongoEntity())
+		   		.onErrorResume(e->{
+		   			logger.error(e.getMessage());
+		   			return Flux.just(new LogBeanMongoEntity());
+		   		});
 	}
 }

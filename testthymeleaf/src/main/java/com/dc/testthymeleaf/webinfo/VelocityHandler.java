@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import com.dc.testthymeleaf.bean.ResInfoBean;
 import com.dc.testthymeleaf.entity.GameLogManageEntity;
+import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 import com.dc.testthymeleaf.mytest.TestVelocity;
 import com.dc.testthymeleaf.service.LogManagerService;
@@ -76,5 +77,16 @@ public class VelocityHandler {
 		Mono<ResInfoBean> resinfo=logManagerService.findByGamecodeMongo(gamecode);
 		return ok().contentType(MediaType.APPLICATION_STREAM_JSON).
 				body(resinfo,ResInfoBean.class);
+	}
+	
+	/**
+	 * 查询数据bean对象
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> getLogBeanByManageId(ServerRequest serverRequest){
+		String logManageId=serverRequest.pathVariable("logManageId");
+		return ok().contentType(MediaType.APPLICATION_STREAM_JSON).
+				body(logManagerService.findByLogManageId(logManageId),LogBeanMongoEntity.class);
 	}
 }
