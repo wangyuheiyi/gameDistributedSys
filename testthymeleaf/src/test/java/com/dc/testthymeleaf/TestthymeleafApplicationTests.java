@@ -62,7 +62,7 @@ public class TestthymeleafApplicationTests {
 		LogBeanMongoEntity logBeanMongoEntity=new LogBeanMongoEntity();
 		logBeanMongoEntity.setLogManageId("fsdfsd");
 		logBeanMongoEntity.setBeanName("wangyu");
-		logBeanMongoEntity.setBaseBean(true);
+		logBeanMongoEntity.setIsBaseBean("1");
 		WebClient webClient = WebClient.create("http://localhost:8091");
 		Mono<String> testMono=webClient.post().uri("/saveLogBean")
  		.contentType(MediaType.APPLICATION_STREAM_JSON) //声明请求体的数据格式为application/stream+json;

@@ -34,16 +34,26 @@ new Vue({
         		beanName: "newbean"+this.tmpinfoIndex,
         		beanDescribe: "",
         		fatherBeanName: "",
-        		isBaseBean: true
+        		isBaseBean: '0'
             });
         	this.tmpinfoIndex++;
         },
         saveLogBean: function(logbean){
-        	console.log(logbean.isBaseBean);
         	var url = "/saveLogBean/";
         	_this= this;
         	axios.post(url,logbean).then(function(result) {
-        		console.log(result.data);
+        		var res=result.data;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        		}else{
+        			_this.$Message.error(res.resStr);
+        		}
+        		for(var i=0;i<_this.logBeans.length;i++){
+        			if(_this.logBeans[i].beanName==res.resDate.beanName)
+        			{
+        				Vue.set(_this.logBeans,i,res.resDate);
+        			}
+        		}
         	});
         }
     }
@@ -73,15 +83,8 @@ function reqAfterInfo(_this,result){
 function getLogBeanInfo(_this,logManageId){
 	var url = "/findBylogBean/"+logManageId;
 	axios.get(url).then(function(result) {
-		console.log(result.data.length);
-		console.log(result.data[0]);
-		for(var tmpLogBean in result.data){
-			console.log(tmpLogBean.id);
+		for(var i=0;i<result.data.length;i++){
+			_this.logBeans.push(result.data[i]);
 		}
-		//_this.logBeans.push(result.data);
-		
-		
-		//if(result.data.id!=null)
-		//	_this.logBeans.push(result.data);
 	});
 }

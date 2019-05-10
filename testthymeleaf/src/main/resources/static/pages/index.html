@@ -117,12 +117,17 @@
 		       					<i-col span="1">基类名称:</i-col>
 		       					<i-col span="3"><i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input></i-col>
 		       					<i-col span="1">是否基类:</i-col>
-		       					<i-col span="3"><i-switch v-model="logBean.isBaseBean"></i-switch></i-col>
+		       					<i-col span="3">
+		       						<Radio-group v-model="logBean.isBaseBean">
+									    <Radio label="0">否</Radio>
+									    <Radio label="1">是</Radio>
+									</Radio-group>
+								</i-col>
 		       					<i-col span="1">操作:</i-col>
 		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
 					    </Row>
 					    <Panel name="logBean.beanName">
-					    	{{logBean.beanName}}
+					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
 					    </Panel>
 				   </Collapse>
 		      	 </div>

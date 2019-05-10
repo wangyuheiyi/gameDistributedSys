@@ -1,6 +1,5 @@
 package com.dc.testthymeleaf.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +36,7 @@ public class LogBeanMongoEntity {
 	private String fatherBeanName;
 	
 	/** 是否是基类*/
-	private boolean isBaseBean;
+	private String isBaseBean;
 	
 	@Override
 	public String toString(){
