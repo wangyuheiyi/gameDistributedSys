@@ -6,8 +6,10 @@ new Vue({
     	name: "",
     	isCreat:false,
     	dataInfo:Object,
-    	tmpinfoIndex:1,
-    	logBeans:[]
+    	tmpBeanIndex:1,
+    	logBeans:[],
+    	tmpFieldIndex:1,
+    	logFields:[]
     },
     mounted:function(){
     	var url = "/findByGameCodeMongo/"+gameCode;
@@ -31,12 +33,12 @@ new Vue({
         	this.logBeans.push({
         		id: null,
         		logManageId: this.dataInfo.id,
-        		beanName: "newbean"+this.tmpinfoIndex,
+        		beanName: "newbean"+this.tmpBeanIndex,
         		beanDescribe: "",
         		fatherBeanName: "",
         		isBaseBean: '0'
             });
-        	this.tmpinfoIndex++;
+        	this.tmpBeanIndex++;
         },
         saveLogBean: function(logbean){
         	var url = "/saveLogBean/";
@@ -50,11 +52,20 @@ new Vue({
         		}
         		for(var i=0;i<_this.logBeans.length;i++){
         			if(_this.logBeans[i].beanName==res.resDate.beanName)
-        			{
         				Vue.set(_this.logBeans,i,res.resDate);
-        			}
         		}
         	});
+        },
+        addlogField: function(logBeanId){
+        	this.logFields.push({
+	        	id: null,
+	        	logBeanId:logBeanId,
+	        	fieldType:"",
+	        	fieldName:"newfield"+ this.tmpFieldIndex,
+	        	bigName:"Newfield"+ this.tmpFieldIndex,
+	        	comment:""
+        	});
+        	this.tmpFieldIndex++;
         }
     }
 });
@@ -84,7 +95,7 @@ function getLogBeanInfo(_this,logManageId){
 	var url = "/findBylogBean/"+logManageId;
 	axios.get(url).then(function(result) {
 		for(var i=0;i<result.data.length;i++){
-			_this.logBeans.push(result.data[i]);
+			if(result.data[i].id!=null) _this.logBeans.push(result.data[i]);
 		}
 	});
 }

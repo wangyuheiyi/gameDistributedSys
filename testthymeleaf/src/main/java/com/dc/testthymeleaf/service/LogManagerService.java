@@ -12,9 +12,11 @@ import com.dc.testthymeleaf.TestthymeleafApplication;
 import com.dc.testthymeleaf.bean.ResInfoBean;
 import com.dc.testthymeleaf.dao.IGameLogManageRepository;
 import com.dc.testthymeleaf.dao.ILogBeanMongoRepository;
+import com.dc.testthymeleaf.dao.ILogFieldMongoRepository;
 import com.dc.testthymeleaf.dao.ILogManageMongoRepository;
 import com.dc.testthymeleaf.entity.GameLogManageEntity;
 import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
+import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 
 /**
@@ -30,11 +32,15 @@ public class LogManagerService {
 	@Autowired 
 	IGameLogManageRepository gameLogManageRepository;
 	
-	/** mongoDb*/
+	/** ============mongoDb============*/
 	@Autowired
 	ILogManageMongoRepository logManageMongoRepository;
+	
 	@Autowired
 	ILogBeanMongoRepository logBeanMongoRepository;
+	
+	@Autowired
+	ILogFieldMongoRepository lLogFieldMongoRepository;
 	
 	/**
 	 * 保存数据库数据
@@ -112,9 +118,39 @@ public class LogManagerService {
 		   		});
 	}
 	
+	/**
+	 * 保存日志实体对象
+	 * @param logBeanMongoEntity
+	 * @return
+	 */
 	public Mono<ResInfoBean> saveLogBeanMongo(LogBeanMongoEntity logBeanMongoEntity){
 		return logBeanMongoRepository.save(logBeanMongoEntity)
 				.flatMap(info-> Mono.just(new ResInfoBean(0,"save is ok",info)))
 				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogBeanMongoEntity())));
 	}
+	
+	/**
+	 * 根据实体id查询实体中所有的字段
+	 * @param logBeanId
+	 * @return
+	 */
+	public Flux<LogFieldMongoEntity> findFieldsByLogBeanId(String logBeanId){
+		return lLogFieldMongoRepository.findByLogBeanId(logBeanId)
+		   		.defaultIfEmpty(new LogFieldMongoEntity())
+		   		.onErrorResume(e->{
+		   			logger.error(e.getMessage());
+		   			return Flux.just(new LogFieldMongoEntity());
+		   		});
+	}
+	
+	/**
+	 * 保存实体类字段
+	 * @param logFieldMongoEntity
+	 * @return
+	 */
+	public Mono<ResInfoBean> saveLogFieldMongo(LogFieldMongoEntity logFieldMongoEntity){
+		return lLogFieldMongoRepository.save(logFieldMongoEntity)
+				.flatMap(info-> Mono.just(new ResInfoBean(0,"save is ok",info)))
+				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogFieldMongoEntity())));
+	} 
 }

@@ -105,10 +105,10 @@
 		      </Card>
 		      <Card title="日志文件" icon="md-list" :padding="0" shadow style="width: 100%;">
 		      	 <div style="padding:20px;">
-		      	 	<i-button type="info" @click="addlogBean">新建数据</i-button>
+		      	 	<i-button type="info" @click="addlogBean">添加日志实体类</i-button>
 		      	 </div>
 		      	 <div style="padding:20px;">
-		      	 	<Collapse v-for="logBean in logBeans" accordion>
+		      	 	<Collapse accordion v-for="logBean in logBeans">
 		      	 		<Row type="flex" justify="start" align="middle" :gutter="16">
 					      		<i-col span="1">实体名:</i-col>
 					      		<i-col span="3"><i-input  placeholder="" v-model="logBean.beanName" clearable></i-input></i-col>
@@ -117,7 +117,7 @@
 		       					<i-col span="1">基类名称:</i-col>
 		       					<i-col span="3"><i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input></i-col>
 		       					<i-col span="1">是否基类:</i-col>
-		       					<i-col span="3">
+		       					<i-col span="2">
 		       						<Radio-group v-model="logBean.isBaseBean">
 									    <Radio label="0">否</Radio>
 									    <Radio label="1">是</Radio>
@@ -128,6 +128,29 @@
 					    </Row>
 					    <Panel name="logBean.beanName">
 					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
+					    	<p slot="content">
+					    		<i-button type="info" @click="addlogField(logBean.id)">添加实体字段</i-button>
+					    		<div style="padding:10px;" v-if="logFields.length">
+						    		<ul class="fieldinfo">
+						    		 	<li v-for="logField in logFields">
+						    		 		<Row type="flex" justify="start" align="middle" :gutter="16">
+						    		 			<i-col span="1">fieldid:</i-col>
+						      					<i-col span="2">{{logField.id}}</i-col>
+						      					<i-col span="1">类型:</i-col>
+						      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldType" clearable></i-input></i-col>
+						      					<i-col span="1">名称:</i-col>
+						      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldName" clearable></i-input></i-col>
+						      					<i-col span="1">大写名:</i-col>
+						      					<i-col span="2"><i-input  placeholder="" v-model="logField.bigName" clearable></i-input></i-col>
+						      					<i-col span="1">注释:</i-col>
+						      					<i-col span="2"><i-input  placeholder="" v-model="logField.comment" clearable></i-input></i-col>
+						      					<i-col span="1">操作:</i-col>
+						      					<i-col span="2"><i-button type="success" >保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
+						    		 		</Row>
+						    		 	</li>
+						    		</ul>
+					    		</div>
+					    	</p>
 					    </Panel>
 				   </Collapse>
 		      	 </div>

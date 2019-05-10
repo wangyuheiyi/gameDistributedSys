@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import com.dc.testthymeleaf.bean.ResInfoBean;
 import com.dc.testthymeleaf.entity.GameLogManageEntity;
 import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
+import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 import com.dc.testthymeleaf.mytest.TestVelocity;
 import com.dc.testthymeleaf.service.LogManagerService;
@@ -102,4 +102,25 @@ public class VelocityHandler {
 						body(logManagerService.saveLogBeanMongo(param), ResInfoBean.class));
 	}
 	
+	/**
+	 * 根据bean的id查询bean中的所有字段
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> getLogFieldByBeanId(ServerRequest serverRequest){
+		String logBeanId=serverRequest.pathVariable("logBeanId");
+		return ok().contentType(MediaType.APPLICATION_JSON).
+				body(logManagerService.findFieldsByLogBeanId(logBeanId),LogFieldMongoEntity.class);
+	}
+	
+	/**
+	 * 保存字段数据
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> saveLogField(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogFieldMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(logManagerService.saveLogFieldMongo(param), ResInfoBean.class));
+	}
 }

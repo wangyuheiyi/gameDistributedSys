@@ -1,11 +1,10 @@
 package com.dc.testthymeleaf.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,7 +23,7 @@ public class LogFieldMongoEntity {
     private String id;
 	
 	/** 外键关联对应实体类id*/
-	private long logBeanId;
+	private String logBeanId;
 	
 	/** 字段类型*/
 	private String fieldType;
