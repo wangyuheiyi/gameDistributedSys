@@ -153,4 +153,9 @@ public class LogManagerService {
 				.flatMap(info-> Mono.just(new ResInfoBean(0,"save is ok",info)))
 				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogFieldMongoEntity())));
 	} 
+	
+	public Mono<ResInfoBean> deleteLogFieldMongo(LogFieldMongoEntity logFieldMongoEntity){
+		return lLogFieldMongoRepository.delete(logFieldMongoEntity)
+				.flatMap(info-> Mono.just(new ResInfoBean(0,"delete field is ok",info)));
+	}
 }
