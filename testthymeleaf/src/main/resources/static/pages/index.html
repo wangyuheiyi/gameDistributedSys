@@ -128,13 +128,12 @@
 					    </Row>
 					    <Panel :name="logBean.beanName">
 					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
-					    	<p slot="content" style="height: 500px;">
+					    	<p slot="content">
 					    		<i-button type="info" @click="addlogField(logBean.id)">添加实体字段</i-button>
 					    		<Divider orientation="left">字段内容</Divider>
 								<span v-for="logField in logFields">
+									<Divider orientation="left">fieldid:{{logField.id}}</Divider>
 									<Row type="flex" justify="start" align="middle" :gutter="15" >
-										<i-col span="1">fieldid:</i-col>
-				      					<i-col span="2">{{logField.id}}</i-col>
 				      					<i-col span="1">类型:</i-col>
 				      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldType" clearable></i-input></i-col>
 				      					<i-col span="1">名称:</i-col>
@@ -144,7 +143,7 @@
 				      					<i-col span="1">注释:</i-col>
 				      					<i-col span="2"><i-input  placeholder="" v-model="logField.comment" clearable></i-input></i-col>
 				      					<i-col span="1">操作:</i-col>
-				      					<i-col span="2"><i-button type="success" >保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
+				      					<i-col span="2"><i-button type="success" @click="saveLogField(logField)">保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
 									</Row>
 									<br>
 								</span>

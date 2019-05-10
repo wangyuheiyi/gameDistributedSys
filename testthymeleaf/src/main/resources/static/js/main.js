@@ -31,7 +31,16 @@ new Vue({
         	});
         },
         collapseChange: function(key){
+        	//清空记录
+        	this.logFields= [];
         	console.log(key[0]);
+        	//根据名字获取id
+        	var tmpBeanId=null;
+        	for(var i=0;i<this.logBeans.length;i++){
+    			if(this.logBeans[i].beanName==key[0]) tmpBeanId=this.logBeans[i].id;
+    		}
+        	console.log(tmpBeanId);
+        	if(tmpBeanId!=null) getLogFieldInfo(this,tmpBeanId);
         },
         addlogBean: function (){
         	this.logBeans.push({
@@ -70,6 +79,22 @@ new Vue({
 	        	comment:""
         	});
         	this.tmpFieldIndex++;
+        },
+        saveLogField: function(logField){
+        	var url = "/saveLogField/";
+        	_this= this;
+        	axios.post(url,logField).then(function(result) {
+        		var res=result.data;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        		}else{
+        			_this.$Message.error(res.resStr);
+        		}
+        		for(var i=0;i<_this.logFields.length;i++){
+        			if(_this.logFields[i].fieldName==res.resDate.fieldName)
+        				Vue.set(_this.logFields,i,res.resDate);
+        		}
+        	});
         }
     }
 });
@@ -94,12 +119,23 @@ function reqAfterInfo(_this,result){
 	 }
 }
 
-//查询方法
+//查询实体类
 function getLogBeanInfo(_this,logManageId){
 	var url = "/findBylogBean/"+logManageId;
 	axios.get(url).then(function(result) {
 		for(var i=0;i<result.data.length;i++){
 			if(result.data[i].id!=null) _this.logBeans.push(result.data[i]);
+		}
+	});
+}
+
+//查询实体类的字段
+function getLogFieldInfo(_this,logBeanId){
+	var url = "/findBylogField/"+logBeanId;
+	axios.get(url).then(function(result) {
+		console.log(result.data[0]);
+		for(var i=0;i<result.data.length;i++){
+			if(result.data[i].id!=null) _this.logFields.push(result.data[i]);
 		}
 	});
 }
