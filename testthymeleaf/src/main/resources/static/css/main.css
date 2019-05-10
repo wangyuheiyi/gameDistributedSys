@@ -7,3 +7,7 @@
 .fieldinfo{
   list-style:none;
 }
+
+.fieldcollapse{
+  height: 500px;
+}
