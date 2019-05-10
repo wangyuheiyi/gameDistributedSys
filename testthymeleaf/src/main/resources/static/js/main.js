@@ -3,6 +3,7 @@ var gameCode=6;
 new Vue({
     el: '#managerInfo',
     data: {
+    	panelvalue:"",
     	name: "",
     	isCreat:false,
     	dataInfo:Object,
@@ -28,6 +29,9 @@ new Vue({
         	axios.post(url,_this.dataInfo).then(function(result) {
         		reqAfterInfo(_this,result);
         	});
+        },
+        collapseChange: function(key){
+        	console.log(key[0]);
         },
         addlogBean: function (){
         	this.logBeans.push({

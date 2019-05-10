@@ -108,7 +108,7 @@
 		      	 	<i-button type="info" @click="addlogBean">添加日志实体类</i-button>
 		      	 </div>
 		      	 <div style="padding:20px;">
-		      	 	<Collapse accordion v-for="logBean in logBeans" >
+		      	 	<Collapse v-model="panelvalue" accordion v-for="logBean in logBeans" @on-change="collapseChange">
 		      	 		<Row type="flex" justify="start" align="middle" :gutter="16">
 					      		<i-col span="1">实体名:</i-col>
 					      		<i-col span="3"><i-input  placeholder="" v-model="logBean.beanName" clearable></i-input></i-col>
@@ -126,7 +126,7 @@
 		       					<i-col span="1">操作:</i-col>
 		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
 					    </Row>
-					    <Panel name="logBean.beanName">
+					    <Panel :name="logBean.beanName">
 					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
 					    	<p slot="content" style="height: 500px;">
 					    		<i-button type="info" @click="addlogField(logBean.id)">添加实体字段</i-button>
