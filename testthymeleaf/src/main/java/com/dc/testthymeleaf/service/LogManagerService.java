@@ -130,6 +130,19 @@ public class LogManagerService {
 	}
 	
 	/**
+	 * 删除所有实体bean下所有的字段，再删除bean本身的数据
+	 * @param logBeanMongoEntity
+	 * @return
+	 */
+	public Mono<ResInfoBean> deleteLogMongoMongo(LogBeanMongoEntity logBeanMongoEntity){
+		return lLogFieldMongoRepository.findByLogBeanId(logBeanMongoEntity.getId())
+		.flatMap(logField->lLogFieldMongoRepository.delete(logField)).then(Mono.just(logBeanMongoEntity))
+		.flatMap(pram->logBeanMongoRepository.delete(pram))
+		.then(Mono.just(new ResInfoBean(0,"delete bean is ok",Mono.empty())))
+		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete bean is error ! :["+e.getMessage()+"]",Mono.empty())));
+	}
+	
+	/**
 	 * 根据实体id查询实体中所有的字段
 	 * @param logBeanId
 	 * @return
@@ -161,6 +174,6 @@ public class LogManagerService {
 	 */
 	public Mono<ResInfoBean> deleteLogFieldMongo(LogFieldMongoEntity logFieldMongoEntity){
 		return lLogFieldMongoRepository.delete(logFieldMongoEntity).then(Mono.just(new ResInfoBean(0,"delete field is ok",Mono.empty())))
-				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete is error ! :["+e.getMessage()+"]",Mono.empty())));
+				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete field is error ! :["+e.getMessage()+"]",Mono.empty())));
 	}
 }

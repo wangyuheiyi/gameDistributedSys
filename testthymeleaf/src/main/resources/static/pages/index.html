@@ -124,7 +124,7 @@
 									</Radio-group>
 								</i-col>
 		       					<i-col span="1">操作:</i-col>
-		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error">删除</i-button></i-col>
+		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogBean(logBean)">删除</i-button></i-col>
 					    </Row>
 					    <Panel :name="logBean.beanName">
 					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}

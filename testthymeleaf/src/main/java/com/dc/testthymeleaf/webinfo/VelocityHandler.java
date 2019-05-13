@@ -103,6 +103,17 @@ public class VelocityHandler {
 	}
 	
 	/**
+	 * 删除bean对象
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> deleteLogBean(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogBeanMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(logManagerService.deleteLogMongoMongo(param), ResInfoBean.class));
+	}
+	
+	/**
 	 * 根据bean的id查询bean中的所有字段
 	 * @param serverRequest
 	 * @return
@@ -124,6 +135,11 @@ public class VelocityHandler {
 						body(logManagerService.saveLogFieldMongo(param), ResInfoBean.class));
 	}
 	
+	/**
+	 * 删除字段信息
+	 * @param serverRequest
+	 * @return
+	 */
 	public Mono<ServerResponse> deleteLogField(ServerRequest serverRequest){
 		return serverRequest.bodyToMono(LogFieldMongoEntity.class)
 		.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
