@@ -30,6 +30,13 @@ new Vue({
         		reqAfterInfo(_this,result);
         	});
         },
+        deleteLogManager: function(){
+        	var url = "/deleteLogManager/";
+        	_this= this;
+        	axios.post(url,_this.dataInfo).then(function(result) {
+        		reqAfterInfo(_this,result);
+        	});
+        },
         collapseChange: function(key){
         	//清空记录
         	this.logFields= [];
@@ -68,20 +75,28 @@ new Vue({
         	});
         },
         deleteLogBean: function(logBean){
-        	var url = "/deleteLogBean/";
-        	_this= this;
-        	axios.post(url,logBean).then(function(result) {
-        		var res=result.data;
-        		if(res.status == "0"){
-        			_this.$Message.success(res.resStr);
-        			for(var i=0;i<_this.logBeans.length;i++){
-            			if(_this.logBeans[i].beanName==logBean.beanName)
-            				Vue.delete(_this.logBeans,i);
-            		}
-        		}else{
-        			_this.$Message.error(res.resStr);
+        	if(logBean.id==null){
+        		for(var i=0;i<_this.logBeans.length;i++){
+        			if(_this.logBeans[i].beanName==logBean.beanName)
+        				Vue.delete(_this.logBeans,i);
         		}
-        	});
+        	}else{
+        		var url = "/deleteLogBean/";
+            	_this= this;
+            	axios.post(url,logBean).then(function(result) {
+            		var res=result.data;
+            		if(res.status == "0"){
+            			_this.$Message.success(res.resStr);
+            			for(var i=0;i<_this.logBeans.length;i++){
+                			if(_this.logBeans[i].beanName==logBean.beanName)
+                				Vue.delete(_this.logBeans,i);
+                		}
+            		}else{
+            			_this.$Message.error(res.resStr);
+            		}
+            	});
+        	}
+        	
         },
         addlogField: function(logBeanId){
         	this.logFields.push({
@@ -111,20 +126,27 @@ new Vue({
           	});
         },
         deleteLogField: function(logField){
-        	var url = "/deleteLogField/";
-        	_this= this;
-        	axios.post(url,logField).then(function(result) {
-        		var res=result.data;
-        		if(res.status == "0"){
-        			_this.$Message.success(res.resStr);
-        			for(var i=0;i<_this.logFields.length;i++){
-            			if(_this.logFields[i].fieldName==logField.fieldName)
-            				Vue.delete(_this.logFields,i);
-            		}
-        		}else{
-        			_this.$Message.error(res.resStr);
+        	if(logField.id==null){
+        		for(var i=0;i<_this.logFields.length;i++){
+        			if(_this.logFields[i].fieldName==logField.fieldName)
+        				Vue.delete(_this.logFields,i);
         		}
-        	});
+        	}else{
+        		var url = "/deleteLogField/";
+            	_this= this;
+            	axios.post(url,logField).then(function(result) {
+            		var res=result.data;
+            		if(res.status == "0"){
+            			_this.$Message.success(res.resStr);
+            			for(var i=0;i<_this.logFields.length;i++){
+                			if(_this.logFields[i].fieldName==logField.fieldName)
+                				Vue.delete(_this.logFields,i);
+                		}
+            		}else{
+            			_this.$Message.error(res.resStr);
+            		}
+            	});
+        	}
         }
     }
 });
@@ -151,6 +173,7 @@ function reqAfterInfo(_this,result){
 
 //查询实体类
 function getLogBeanInfo(_this,logManageId){
+	_this.logBeans= [];
 	var url = "/findBylogBean/"+logManageId;
 	axios.get(url).then(function(result) {
 		for(var i=0;i<result.data.length;i++){

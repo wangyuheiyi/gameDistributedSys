@@ -105,6 +105,21 @@ public class LogManagerService {
 	}
 	
 	/**
+	 * 删除整个的日志信息
+	 * @param param
+	 * @return
+	 */
+	public Mono<ResInfoBean> deleteLogManager(LogManageMongoEntity param){
+		return logBeanMongoRepository.findByLogManageId(param.getId())
+		.flatMap(logBean -> lLogFieldMongoRepository.findByLogBeanId(logBean.getId())
+				.flatMap(logField ->lLogFieldMongoRepository.delete(logField))
+				.then(Mono.just(logBean))
+		).flatMap(newLogBean->logBeanMongoRepository.delete(newLogBean)).then(Mono.just(param))
+		.flatMap(logManage ->logManageMongoRepository.delete(logManage)).then(Mono.just(new ResInfoBean(0,"delete LogManager is ok",new LogBeanMongoEntity())))
+		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete LogManager is error ! :["+e.getMessage()+"]",new LogBeanMongoEntity())));
+	}
+	
+	/**
 	 * 获取游戏对象的列表
 	 * @param logManageId
 	 * @return

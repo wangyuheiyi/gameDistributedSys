@@ -81,6 +81,17 @@ public class VelocityHandler {
 	}
 	
 	/**
+	 * 删除整个的日志信息
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> deleteLogManager(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_STREAM_JSON).
+						body(logManagerService.deleteLogManager(param), ResInfoBean.class));
+	}
+	
+	/**
 	 * 查询数据bean对象
 	 * @param serverRequest
 	 * @return

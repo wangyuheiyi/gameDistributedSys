@@ -24,6 +24,7 @@ public class RouterConfig {
 				 .andRoute(GET("/findByGameCode/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCode)
 				 .andRoute(POST("/saveInfo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfo)
 				 .andRoute(GET("/findByGameCodeMongo/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCodeMongo)
+				 .andRoute(POST("/deleteLogManager").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogManager)
 				 .andRoute(POST("/saveInfoMongo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfoMongo)
 				 .andRoute(GET("/findBylogBean/{logManageId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManageId)
 				 .andRoute(POST("/saveLogBean").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogBean)
