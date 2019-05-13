@@ -123,4 +123,10 @@ public class VelocityHandler {
 				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
 						body(logManagerService.saveLogFieldMongo(param), ResInfoBean.class));
 	}
+	
+	public Mono<ServerResponse> deleteLogField(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogFieldMongoEntity.class)
+		.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+				body(logManagerService.deleteLogFieldMongo(param), ResInfoBean.class));
+	}
 }

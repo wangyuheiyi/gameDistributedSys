@@ -60,12 +60,12 @@ new Vue({
         		var res=result.data;
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
+        			for(var i=0;i<_this.logBeans.length;i++){
+            			if(_this.logBeans[i].beanName==res.resDate.beanName)
+            				Vue.set(_this.logBeans,i,res.resDate);
+            		}
         		}else{
         			_this.$Message.error(res.resStr);
-        		}
-        		for(var i=0;i<_this.logBeans.length;i++){
-        			if(_this.logBeans[i].beanName==res.resDate.beanName)
-        				Vue.set(_this.logBeans,i,res.resDate);
         		}
         	});
         },
@@ -87,12 +87,30 @@ new Vue({
         		var res=result.data;
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
+        			for(var i=0;i<_this.logFields.length;i++){
+            			if(_this.logFields[i].fieldName==res.resDate.fieldName)
+            				Vue.set(_this.logFields,i,res.resDate);
+            		}
         		}else{
         			_this.$Message.error(res.resStr);
         		}
-        		for(var i=0;i<_this.logFields.length;i++){
-        			if(_this.logFields[i].fieldName==res.resDate.fieldName)
-        				Vue.set(_this.logFields,i,res.resDate);
+        	});
+        },
+        deleteLogField: function(logField){
+        	var url = "/deleteLogField/";
+        	_this= this;
+        	axios.post(url,logField).then(function(result) {
+        		console.log(result);
+        		console.log(result.data);
+        		var res=result.data;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        			for(var i=0;i<_this.logFields.length;i++){
+            			if(_this.logFields[i].fieldName==logField.fieldName)
+            				Vue.delete(_this.logFields,i);
+            		}
+        		}else{
+        			_this.$Message.error(res.resStr);
         		}
         	});
         }
