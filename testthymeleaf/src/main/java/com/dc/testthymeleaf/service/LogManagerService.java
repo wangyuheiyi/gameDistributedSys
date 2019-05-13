@@ -112,9 +112,14 @@ public class LogManagerService {
 	public Mono<ResInfoBean> deleteLogManager(LogManageMongoEntity param){
 		return logBeanMongoRepository.findByLogManageId(param.getId())
 		.flatMap(logBean -> lLogFieldMongoRepository.findByLogBeanId(logBean.getId())
-				.flatMap(logField ->lLogFieldMongoRepository.delete(logField))
-				.then(Mono.just(logBean))
-		).flatMap(newLogBean->logBeanMongoRepository.delete(newLogBean)).then(Mono.just(param))
+				.flatMap(logField ->lLogFieldMongoRepository.delete(logField)).onErrorResume(e->{
+					logger.error("=====delete Field is error======="+e.getMessage());
+					return Flux.empty();
+				}).then(Mono.just(logBean))
+		).flatMap(newLogBean->logBeanMongoRepository.delete(newLogBean)).onErrorResume(e->{
+			logger.error("=====delete Bean is error======="+e.getMessage());
+			return Flux.empty();
+		}).then(Mono.just(param))
 		.flatMap(logManage ->logManageMongoRepository.delete(logManage)).then(Mono.just(new ResInfoBean(0,"delete LogManager is ok",new LogBeanMongoEntity())))
 		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete LogManager is error ! :["+e.getMessage()+"]",new LogBeanMongoEntity())));
 	}
@@ -151,7 +156,10 @@ public class LogManagerService {
 	 */
 	public Mono<ResInfoBean> deleteLogMongoMongo(LogBeanMongoEntity logBeanMongoEntity){
 		return lLogFieldMongoRepository.findByLogBeanId(logBeanMongoEntity.getId())
-		.flatMap(logField->lLogFieldMongoRepository.delete(logField)).then(Mono.just(logBeanMongoEntity))
+		.flatMap(logField->lLogFieldMongoRepository.delete(logField)).onErrorResume(e->{
+			logger.error("=====delete Field is error======="+e.getMessage());
+			return Flux.empty();
+		}).then(Mono.just(logBeanMongoEntity))
 		.flatMap(pram->logBeanMongoRepository.delete(pram))
 		.then(Mono.just(new ResInfoBean(0,"delete bean is ok",Mono.empty())))
 		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete bean is error ! :["+e.getMessage()+"]",Mono.empty())));

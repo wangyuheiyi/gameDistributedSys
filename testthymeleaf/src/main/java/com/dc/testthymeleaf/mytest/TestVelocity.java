@@ -16,7 +16,6 @@ import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Mono;
@@ -34,8 +33,6 @@ public class TestVelocity {
 	@Autowired
 	MakeLogProperties makeLogProperties;
 	
-	@Autowired
-	private ResourceLoader resourceLoader;
 	
 	public Mono<String> makeFile(){
 		LogFileBean logFileBean=new LogFileBean();
