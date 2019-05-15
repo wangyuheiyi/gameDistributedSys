@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogBeanField {
+public class LogFieldBean {
 	/** 类型 */
 	private String fieldType;
 	/** 名字 */

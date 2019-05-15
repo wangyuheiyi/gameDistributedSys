@@ -1,6 +1,10 @@
 package ${packageBeanName};
 
-
+/**
+*
+* $beanDescribe
+*
+*/
 #if(!$father)
 	public class $className {
 #else

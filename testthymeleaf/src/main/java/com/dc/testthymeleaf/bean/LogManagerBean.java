@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogManagerBean {
+	/** id*/
+	private String id;
 	/** 项目名称*/
 	private String objName;
 	/** 项目路径*/

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -16,13 +17,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import com.dc.testthymeleaf.TestthymeleafApplication;
+import com.dc.testthymeleaf.bean.LogFieldBean;
+import com.dc.testthymeleaf.bean.LogFileBean;
 import com.dc.testthymeleaf.bean.LogManagerBean;
 import com.dc.testthymeleaf.bean.ResInfoBean;
 import com.dc.testthymeleaf.conf.MakeLogProperties;
+import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
+import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 @Service
 public class CreatFileService {
@@ -31,11 +37,15 @@ public class CreatFileService {
 	@Autowired
 	MakeLogProperties makeLogProperties;
 	
+	@Autowired
+	LogManagerService logManagerService;
+	
 	public Mono<ResInfoBean> creatSendObjFile(LogManageMongoEntity logManageEntity){
 		return creatLogFileBean(logManageEntity)
 		.publishOn(Schedulers.elastic()) //切换到io线程操作
 		.doOnNext(info->creatFilePath(info)) //创建文件夹
 		.doOnNext(info->generateLogManageByTempl(info)) //生成发送服务器的操作类
+		.doOnNext(info->creatLogBean(info)) //穿件类实体
 		.flatMap(info-> Mono.just(new ResInfoBean(0,"creat file is ok",info)))
 		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"creat file is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
 	}
@@ -70,6 +80,7 @@ public class CreatFileService {
 	 */
 	private Mono<LogManagerBean> creatLogFileBean(LogManageMongoEntity logManageEntity){
 		LogManagerBean logFileBean=new LogManagerBean();
+		logFileBean.setId(logManageEntity.getId());
 		logFileBean.setObjName(logManageEntity.getSendObjName());
 		logFileBean.setServicePackage(logManageEntity.getSendServicePackage());
 		logFileBean.setBeanPackage(logManageEntity.getSendBeanPackage());
@@ -117,22 +128,72 @@ public class CreatFileService {
 		}
 	}
 	
+	private void creatLogBean(LogManagerBean logFileBean){
+		Flux<LogFileBean> fLogFileBean= logManagerService.findByLogManageId(logFileBean.getId())
+		.flatMap(info->{
+			return logManagerService.findFieldsByLogBeanId(info.getId())
+			.flatMap(logField->creatLogBeanField(logField))
+			.collectList().flatMap(logFields-> creatLogFileBean(info,logFields));
+		});
+		fLogFileBean.doOnNext(loginfo->generateLogFile(logFileBean.getBeanPackage(),logFileBean.getBeanPath(),loginfo));
+	}
 	
+	/**
+	 * 创建实体类的对象
+	 * @param logBeanMongoEntity
+	 * @param logFields
+	 * @return
+	 */
+	private Mono<LogFileBean> creatLogFileBean(LogBeanMongoEntity logBeanMongoEntity,List<LogFieldBean> logFields){
+		LogFileBean logFileBean=new LogFileBean();
+		logFileBean.setBeanName(logBeanMongoEntity.getBeanName());
+		logFileBean.setBeanDescribe(logBeanMongoEntity.getBeanDescribe());
+		logFileBean.setFatherBeanName(logBeanMongoEntity.getFatherBeanName());
+		if(logBeanMongoEntity.getIsBaseBean()!=null&&"1".equals(logBeanMongoEntity.getIsBaseBean()))
+		{
+			logFileBean.setBaseBean(true);
+		}else{
+			logFileBean.setBaseBean(false);
+		}
+		return Mono.just(logFileBean);
+	}
 	
-	private void generateLogBeanByTempl(LogManagerBean logFileBean) throws IOException{
-		VelocityContext _context=new VelocityContext();
-		_context.put("packageName",logFileBean.getServicePackage());
-		_context.put("channelName",logFileBean.getChannelName());
-		File targetFile=new File(logFileBean.getServicePath(),"SendSource.java");
-		creatFile(_context,"/templates/SendSourceClass.vm",targetFile);
-		VelocityContext _sinkSendcontext=new VelocityContext();
-		_sinkSendcontext.put("packageName",logFileBean.getServicePackage());
-		_sinkSendcontext.put("packageBeanName",logFileBean.getBeanPackage());
-		_sinkSendcontext.put("channelName",logFileBean.getChannelName());
-		_sinkSendcontext.put("father","BaseLogMessage");
-		_sinkSendcontext.put("fatherName","BaseLogMessage".toLowerCase());
-		File sinkSendFile=new File(logFileBean.getServicePath(),"SinkSend.java");
-		creatFile(_sinkSendcontext,"/templates/SinkSendClass.vm",sinkSendFile);
+	/**
+	 * 创建字段信息
+	 * @param logField
+	 * @return
+	 */
+	private Mono<LogFieldBean> creatLogBeanField(LogFieldMongoEntity logField){
+		LogFieldBean logBeanField=new LogFieldBean();
+		logBeanField.setFieldType(logField.getFieldType());
+		logBeanField.setFieldName(logField.getFieldName());
+		logBeanField.setBigName(logField.getBigName());
+		logBeanField.setComment(logField.getComment());
+		return Mono.just(logBeanField);
+	}
+	
+	/**
+	 * 生成日志实体类
+	 * @param beanPackage
+	 * @param beanPath
+	 * @param logFileBean
+	 */
+	public void generateLogFile(String beanPackage,String beanPath,LogFileBean logFileBean){
+		VelocityContext logContext=new VelocityContext();
+		logContext.put("packageBeanName",beanPackage);
+		logContext.put("className",logFileBean.getBeanName());
+		logContext.put("beanDescribe",logFileBean.getBeanDescribe());
+		if(logFileBean.isBaseBean())
+			logContext.put("father",logFileBean.getFatherBeanName());
+		
+		File targetLogFile=new File(beanPath,logFileBean.getBeanName()+".java");
+		logContext.put("fields",logFileBean.getLogFieldList());
+		try {
+			creatFile(logContext,"/templates/SendBeanClass.vm",targetLogFile);
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 	
 	/**
