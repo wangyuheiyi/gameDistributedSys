@@ -6,6 +6,7 @@ new Vue({
     	panelvalue:"",
     	name: "",
     	isCreat:false,
+    	isCreatLog:false,
     	dataInfo:Object,
     	tmpBeanIndex:1,
     	logBeans:[],
@@ -22,6 +23,18 @@ new Vue({
     methods: {
     	creatNew: function () {
     		this.isCreat=false;
+        },
+        creatLog: function (){
+        	var url = "/creatLog/";
+        	_this= this;
+        	axios.post(url,_this.dataInfo).then(function(result) {
+        		var res=result.data;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        		}else{
+        			_this.$Message.error(res.resStr);
+        		}
+        	});
         },
         saveInfo: function () {
         	var url = "/saveInfoMongo/";
@@ -159,11 +172,13 @@ function reqAfterInfo(_this,result){
 		_this.dataInfo = res.resDate;
 		if(_this.dataInfo.id==null){
 			_this.isCreat=true;
+			_this.isCreatLog=false;
 			_this.dataInfo.gamecode=gameCode;
     		_this.dataInfo.gamename='临时';
 		}
 		else{
 			_this.isCreat=false;
+			_this.isCreatLog=true;
 			getLogBeanInfo(_this,_this.dataInfo.id);
 		}
 	 }else{

@@ -21,6 +21,7 @@ public class RouterConfig {
 //				 .andRoute(RequestPredicates.GET("/creatFile").and(predicatesAccept), velocityHandler::creatFile);
 		 
 		 return route(GET("/init").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::initInfo)
+				 .andRoute(POST("/creatLog").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::creatLogManagerFile)
 				 .andRoute(GET("/findByGameCode/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCode)
 				 .andRoute(POST("/saveInfo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfo)
 				 .andRoute(GET("/findByGameCodeMongo/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCodeMongo)

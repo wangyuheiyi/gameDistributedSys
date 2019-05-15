@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogFileBean {
+public class LogManagerBean {
 	/** 项目名称*/
 	private String objName;
 	/** 项目路径*/

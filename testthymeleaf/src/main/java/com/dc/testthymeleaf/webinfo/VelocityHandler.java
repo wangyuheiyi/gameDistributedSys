@@ -16,6 +16,7 @@ import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 import com.dc.testthymeleaf.mytest.TestVelocity;
+import com.dc.testthymeleaf.service.CreatFileService;
 import com.dc.testthymeleaf.service.LogManagerService;
 
 @Component
@@ -25,6 +26,9 @@ public class VelocityHandler {
 	
 	@Autowired
 	LogManagerService logManagerService;
+	
+	@Autowired
+	CreatFileService creatFileService;
 	
 	public Mono<ServerResponse> creatFile(ServerRequest serverRequest) {
 		return ok().contentType(MediaType.TEXT_PLAIN).body(testVelocity.makeFile(),String.class);
@@ -155,5 +159,11 @@ public class VelocityHandler {
 		return serverRequest.bodyToMono(LogFieldMongoEntity.class)
 		.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
 				body(logManagerService.deleteLogFieldMongo(param), ResInfoBean.class));
+	}
+	
+	public Mono<ServerResponse> creatLogManagerFile(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(creatFileService.creatSendObjFile(param), ResInfoBean.class));
 	}
 }

@@ -20,11 +20,11 @@
 		    <div v-else>
 		      <Card title="日志信息" icon="ios-options" :padding="0" shadow style="width: 100%;">
 		      	<div style="padding:10px;">
-			      	<Row class="code-row-bg">
+			      	<Row Row type="flex" justify="start" align="middle" class="code-row-bg">
 			      		<i-col span="2">数据id:</i-col>
 			      		<i-col span="6">{{dataInfo.id}}</i-col>
-			      		<i-col span="1"></i-col>
-       					<i-col span="15">数据库自动生成id</i-col>
+       					<i-col span="2">数据库自动生成id</i-col>
+       					<i-col span="13"><i-button type="info" @click="creatLog" v-if="isCreatLog">生成文件</i-button></i-col>
 			      	</Row>
 			      	<Row class="code-row-bg">
 			      		<i-col span="2">游戏码:</i-col>

@@ -23,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 
 import com.dc.testthymeleaf.TestthymeleafApplication;
 import com.dc.testthymeleaf.bean.LogBeanField;
-import com.dc.testthymeleaf.bean.LogFileBean;
+import com.dc.testthymeleaf.bean.LogManagerBean;
 import com.dc.testthymeleaf.conf.MakeLogProperties;
 
 @Component
@@ -35,7 +35,7 @@ public class TestVelocity {
 	
 	
 	public Mono<String> makeFile(){
-		LogFileBean logFileBean=new LogFileBean();
+		LogManagerBean logFileBean=new LogManagerBean();
 		logFileBean.setObjName("mynewtest");
 		logFileBean.setServicePackage("com.dc.mynewtest.service");
 		logFileBean.setBeanPackage("com.dc.mynewtest.bean");
@@ -69,7 +69,7 @@ public class TestVelocity {
 		return Mono.just("creat file");
 	}
 	
-	private LogFileBean creatFilePath(LogFileBean logFileBean){
+	private LogManagerBean creatFilePath(LogManagerBean logFileBean){
 		if(!creatFilePathByStr(logFileBean.getServicePath())) throw new RuntimeException("Can't create dir");
 		if(!creatFilePathByStr(logFileBean.getBeanPath())) throw new RuntimeException("Can't create dir");
 		if(!creatFilePathByStr(logFileBean.getTargetPath())) throw new RuntimeException("Can't create dir");
@@ -88,7 +88,7 @@ public class TestVelocity {
 		return true;
 	}
 	
-	public void test(LogFileBean logFileBean){
+	public void test(LogManagerBean logFileBean){
 		logger.info("creat file is over=========="+logFileBean.toString());
 	}
 	
@@ -96,7 +96,7 @@ public class TestVelocity {
 	 * 生成文件
 	 * @param logFileBean
 	 */
-	private LogFileBean generateTemplate(LogFileBean logFileBean) throws IOException{
+	private LogManagerBean generateTemplate(LogManagerBean logFileBean) throws IOException{
 		VelocityContext _context=new VelocityContext();
 		_context.put("packageName",logFileBean.getServicePackage());
 		_context.put("channelName",logFileBean.getChannelName());
@@ -218,7 +218,7 @@ public class TestVelocity {
 	 * @param logFileBean
 	 * @return
 	 */
-	private LogFileBean runMvncom(LogFileBean logFileBean){
+	private LogManagerBean runMvncom(LogManagerBean logFileBean){
 		 logger.info("start mvncommond");
 		if(logFileBean.getMvnCom()==null||logFileBean.getMvnCom().equals("")){
 			throw new RuntimeException("commond file is null");
