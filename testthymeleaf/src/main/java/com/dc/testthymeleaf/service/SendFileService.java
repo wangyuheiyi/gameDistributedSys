@@ -300,13 +300,20 @@ public class SendFileService {
 		}
 	}
 	
+	public Mono<ResInfoBean> runCom(LogManageMongoEntity logManageEntity){
+		return logManagerEntityTransformBean(logManageEntity)
+			   .doOnNext(info->runMvncom(info))
+			   .flatMap(info-> Mono.just(new ResInfoBean(0,"runMvncom is ok",info)))
+			   .onErrorResume(e-> Mono.just(new ResInfoBean(1,"runMvncom is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
+	}
+	
 	/**
 	 * 执行命令语句
 	 * @param logFileBean
 	 * @return
 	 */
 	private LogManagerBean runMvncom(LogManagerBean logFileBean){
-		 logger.info("start mvncommond");
+		logger.info("start mvncommond");
 		if(logFileBean.getMvnCom()==null||logFileBean.getMvnCom().equals("")){
 			throw new RuntimeException("commond file is null");
 		}
@@ -315,8 +322,7 @@ public class SendFileService {
 		try { 
 			//去项目的指定目录执行命令
 			File dir = new File(logFileBean.getObjPath());
-            ps = Runtime.getRuntime().exec(logFileBean.getObjPath()+"\\"+logFileBean.getMvnCom(),null,dir);  
-//            ps.waitFor();
+            ps = Runtime.getRuntime().exec(logFileBean.getObjPath()+"\\"+logFileBean.getMvnCom(),null,dir);
             br = new BufferedReader(new InputStreamReader(ps.getInputStream()));  
             StringBuffer sb = new StringBuffer();  
             String line;  
@@ -324,7 +330,7 @@ public class SendFileService {
                 sb.append(line).append("\n");  
             }  
             String result = sb.toString();  
-            logger.debug("mvncmd=========["+result+"]");
+            logger.info("mvncmd=========["+result+"]");
             }   
         catch (Exception e) {  
         	logger.error("runMvncom error :"+e.getMessage());
@@ -334,6 +340,7 @@ public class SendFileService {
 				br.close();
 			} catch (IOException e) {
 				logger.error("runMvncom error :"+e.getMessage());
+				throw new RuntimeException("mvnCom error"+e.getMessage());
 			}
         }  
 		return logFileBean;

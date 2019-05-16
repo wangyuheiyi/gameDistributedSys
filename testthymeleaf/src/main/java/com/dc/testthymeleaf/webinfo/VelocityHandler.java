@@ -28,7 +28,7 @@ public class VelocityHandler {
 	LogManagerService logManagerService;
 	
 	@Autowired
-	SendFileService creatFileService;
+	SendFileService sendFileService;
 	
 	public Mono<ServerResponse> creatFile(ServerRequest serverRequest) {
 		return ok().contentType(MediaType.TEXT_PLAIN).body(testVelocity.makeFile(),String.class);
@@ -161,9 +161,25 @@ public class VelocityHandler {
 				body(logManagerService.deleteLogFieldMongo(param), ResInfoBean.class));
 	}
 	
+	/**
+	 * 创建日志文件
+	 * @param serverRequest
+	 * @return
+	 */
 	public Mono<ServerResponse> creatLogManagerFile(ServerRequest serverRequest){
 		return serverRequest.bodyToMono(LogManageMongoEntity.class)
 				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
-						body(creatFileService.creatSendObjFile(param), ResInfoBean.class));
+						body(sendFileService.creatSendObjFile(param), ResInfoBean.class));
+	}
+	
+	/**
+	 * 运行mvn数据
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> runMvnCom(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(sendFileService.runCom(param), ResInfoBean.class));
 	}
 }

@@ -32,6 +32,7 @@ public class RouterConfig {
 				 .andRoute(POST("/deleteLogBean").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogBean)
 				 .andRoute(GET("/findBylogField/{logBeanId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogFieldByBeanId)
 				 .andRoute(POST("/saveLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogField)
-				 .andRoute(POST("/deleteLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogField);
+				 .andRoute(POST("/deleteLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogField)
+		 		 .andRoute(POST("/runMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::runMvnCom);
 	 }
 }
