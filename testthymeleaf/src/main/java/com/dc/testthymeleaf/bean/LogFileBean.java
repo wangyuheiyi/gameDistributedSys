@@ -11,6 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogFileBean {
+	/** id*/
+	private String id;
+	/** 实体类命名空间*/
+	private String beanPackage;
+	/** 实体类路径*/
+	private String beanPath;
 	/** 实体类名成*/
 	private String beanName;
 	/** 实体类描述*/
