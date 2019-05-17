@@ -40,11 +40,13 @@ new Vue({
         	});
         },
         runMvnCom:function(){
+        	mvnLoading=true;
         	var url = "/runMvnCom/";
         	_this= this;
         	axios.post(url,_this.dataInfo).then(function(result) {
+        		console.log(result);
         		var res=result.data;
-        		mvnLoading=true;
+        		mvnLoading=false;
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
         		}else{
@@ -232,12 +234,8 @@ function getLogBeanByManage(_this){
 	_this.logBeans= [];
 	var url = "/findBylogManage/";
 	axios.post(url,_this.dataInfo).then(function(result) {
-		console.log(result.data);
 		for(var i=0;i<result.data.length;i++){
-			if(result.data[i].beanName!=null) {
-				console.log(result.data[i].beanName);
-				_this.logBeans.push(result.data[i]);
-			}
+			if(result.data[i].beanName!=null) _this.logBeans.push(result.data[i]);
 		}
 	});
 }
