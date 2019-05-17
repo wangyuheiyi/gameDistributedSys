@@ -40,19 +40,20 @@ new Vue({
         	});
         },
         runMvnCom:function(){
-        	mvnLoading=true;
+        	this.mvnLoading=true;
         	var url = "/runMvnCom/";
         	_this= this;
         	axios.post(url,_this.dataInfo).then(function(result) {
         		console.log(result);
         		var res=result.data;
-        		mvnLoading=false;
+        		_this.mvnLoading=false;
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
         		}else{
         			_this.$Message.error(res.resStr);
         		}
         	});
+
         },
         saveInfo: function () {
         	var url = "/saveInfoMongo/";
