@@ -24,7 +24,11 @@
 			      		<i-col span="2">数据id:</i-col>
 			      		<i-col span="6">{{dataInfo.id}}</i-col>
        					<i-col span="2">数据库自动生成id</i-col>
-       					<i-col span="13"><i-button type="info" @click="creatLog" v-if="isCreatLog">生成文件</i-button></i-col>
+       					<i-col span="13"><i-button type="info" @click="creatLog" v-if="isCreatLog">生成文件</i-button><Divider type="vertical"></Divider>
+       					<i-button type="info" @click="runMvnCom" :loading="mvnLoading" v-if="isCanRun">
+       						<span v-if="!mvnLoading">执行文件</span>
+        					<span v-else>Loading...</span>
+       					</i-button></i-col>
 			      	</Row>
 			      	<Row class="code-row-bg">
 			      		<i-col span="2">游戏码:</i-col>
@@ -39,6 +43,11 @@
 			      	<Row type="flex" class="code-row-bg" align="middle">
 			      		<i-col span="2">日志服务名称：</i-col>
 			      		<i-col span="6"><i-input  placeholder="日志服务名称" v-model="dataInfo.logservicename" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">日志服务默认基类名称：</i-col>
+			      		<i-col span="6"><i-input  placeholder="默认基类名称" v-model="dataInfo.baseLogClassName" clearable></i-input></i-col>
        					<i-col span="16"></i-col>
 			      	</Row>
 			      	<Divider orientation="left">发送服务的信息</Divider>
@@ -111,18 +120,39 @@
 		      	 	<Collapse v-model="panelvalue" accordion v-for="logBean in logBeans" @on-change="collapseChange">
 		      	 		<Row type="flex" justify="start" align="middle" :gutter="16">
 					      		<i-col span="1">实体名:</i-col>
-					      		<i-col span="3"><i-input  placeholder="" v-model="logBean.beanName" clearable></i-input></i-col>
+					      		<i-col span="3">
+					      			<div v-if="logBean.isBaseBean==='1'">
+					      				<i-input  placeholder="" v-model="logBean.beanName" disabled></i-input>
+					      			</div>
+					      			<div v-else>
+					      				<i-input  placeholder="" v-model="logBean.beanName" clearable></i-input>
+					      			</div>
+					      		</i-col>
 		       					<i-col span="1">实体描述:</i-col>
-		       					<i-col span="3"><i-input  placeholder="" v-model="logBean.beanDescribe" clearable></i-input></i-col>
+		       					<i-col span="3">
+		       						<div v-if="logBean.isBaseBean==='1'">
+					      				<i-input  placeholder="" v-model="logBean.beanDescribe" disabled></i-input>
+					      			</div>
+					      			<div v-else>
+					      				<i-input  placeholder="" v-model="logBean.beanDescribe" clearable></i-input>
+					      			</div>
+		       					</i-col>
 		       					<i-col span="1">基类名称:</i-col>
-		       					<i-col span="3"><i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input></i-col>
-		       					<i-col span="1">是否基类:</i-col>
-		       					<i-col span="2">
+		       					<i-col span="3">
+		       						<div v-if="logBean.isBaseBean==='1'">
+					      				<i-input  placeholder="" v-model="logBean.fatherBeanName" disabled></i-input>
+					      			</div>
+					      			<div v-else>
+					      				<i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input>
+					      			</div>
+		       					</i-col>
+		       					<!--<i-col span="1">是否基类:</i-col>
+		       					  <i-col span="2">
 		       						<Radio-group v-model="logBean.isBaseBean">
 									    <Radio label="0">否</Radio>
 									    <Radio label="1">是</Radio>
 									</Radio-group>
-								</i-col>
+								</i-col>-->
 		       					<i-col span="1">操作:</i-col>
 		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogBean(logBean)">删除</i-button></i-col>
 					    </Row>

@@ -27,6 +27,8 @@ public class LogManagerBean {
 	private String targetPath;
 	/** 判断路径是否都创建成功*/
 	private boolean isCreatSucc;
+	/** 默认基类的名称*/
+	private String baseLogClassName;
 	/** 消息同步渠道名*/
 	private String channelName;
 	/** 执行的命令地址*/

@@ -100,6 +100,17 @@ public class VelocityHandler {
 	 * @param serverRequest
 	 * @return
 	 */
+	public Mono<ServerResponse> getLogBeanByManage(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(logManagerService.findByLogManage(param), LogBeanMongoEntity.class));
+	}
+	
+	/**
+	 * 查询数据bean对象
+	 * @param serverRequest
+	 * @return
+	 */
 	public Mono<ServerResponse> getLogBeanByManageId(ServerRequest serverRequest){
 		String logManageId=serverRequest.pathVariable("logManageId");
 		return ok().contentType(MediaType.APPLICATION_JSON).
@@ -181,5 +192,16 @@ public class VelocityHandler {
 		return serverRequest.bodyToMono(LogManageMongoEntity.class)
 				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
 						body(sendFileService.runCom(param), ResInfoBean.class));
+	}
+	
+	/**
+	 * 运行命令操作
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> canMvnCom(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(sendFileService.canCom(param), ResInfoBean.class));
 	}
 }

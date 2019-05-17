@@ -56,7 +56,7 @@ public class SendFileService {
 		.flatMap(info->{return logManagerService.findByLogManageId(info.getId()).flatMap(logFile->LogBeanEntityTransformBean(info,logFile)).collectList();})//获取日志对象实体
 		.doOnNext(logFileList->getLogFieldBean(logFileList))//将日志对象字段封装进日志对象中，生成所有实体类
 		.flatMap(info-> Mono.just(new ResInfoBean(0,"creat file is ok",info)))
-		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"creat file is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
+		.onErrorResume(e-> Mono.just(new ResInfoBean(1,"creat file is error ! :["+e.getMessage()+"]",new LogFileBean())));
 	}
 	
 	/**
@@ -131,6 +131,7 @@ public class SendFileService {
 		logFileBean.setObjName(logManageEntity.getSendObjName());
 		logFileBean.setServicePackage(logManageEntity.getSendServicePackage());
 		logFileBean.setBeanPackage(logManageEntity.getSendBeanPackage());
+		logFileBean.setBaseLogClassName(logManageEntity.getBaseLogClassName());
 		logFileBean.setObjPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getObjName());
 		logFileBean.setServicePath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getObjName()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getServicePackage().replaceAll("\\.","/"));
@@ -154,18 +155,17 @@ public class SendFileService {
 	 * 根据模板生成发送服务文件
 	 * @param logFileBean
 	 */
-	private void generateLogManageByTempl(LogManagerBean logFileBean){
+	private void generateLogManageByTempl(LogManagerBean logManagerBean){
 		VelocityContext _context=new VelocityContext();
-		_context.put("packageName",logFileBean.getServicePackage());
-		_context.put("channelName",logFileBean.getChannelName());
-		File targetFile=new File(logFileBean.getServicePath(),"SendSource.java");
+		_context.put("packageName",logManagerBean.getServicePackage());
+		_context.put("channelName",logManagerBean.getChannelName());
+		File targetFile=new File(logManagerBean.getServicePath(),"SendSource.java");
 		VelocityContext _sinkSendcontext=new VelocityContext();
-		_sinkSendcontext.put("packageName",logFileBean.getServicePackage());
-		_sinkSendcontext.put("packageBeanName",logFileBean.getBeanPackage());
-		_sinkSendcontext.put("channelName",logFileBean.getChannelName());
-		_sinkSendcontext.put("father","BaseLogMessage");
-		_sinkSendcontext.put("fatherName","BaseLogMessage".toLowerCase());
-		File sinkSendFile=new File(logFileBean.getServicePath(),"SinkSend.java");
+		_sinkSendcontext.put("packageName",logManagerBean.getServicePackage());
+		_sinkSendcontext.put("packageBeanName",logManagerBean.getBeanPackage());
+		_sinkSendcontext.put("father",logManagerBean.getBaseLogClassName());
+		_sinkSendcontext.put("fatherName",logManagerBean.getBaseLogClassName().toLowerCase());
+		File sinkSendFile=new File(logManagerBean.getServicePath(),"SinkSend.java");
 		try {
 			creatFile(_context,"/templates/SendSourceClass.vm",targetFile);
 			creatFile(_sinkSendcontext,"/templates/SinkSendClass.vm",sinkSendFile);
@@ -264,7 +264,7 @@ public class SendFileService {
 		logContext.put("packageBeanName",logFileBean.getBeanPackage());
 		logContext.put("className",logFileBean.getBeanName());
 		logContext.put("beanDescribe",logFileBean.getBeanDescribe());
-		if(logFileBean.isBaseBean())
+		if(!logFileBean.isBaseBean())
 			logContext.put("father",logFileBean.getFatherBeanName());
 		
 		File targetLogFile=new File(logFileBean.getBeanPath(),logFileBean.getBeanName()+".java");
@@ -300,11 +300,34 @@ public class SendFileService {
 		}
 	}
 	
+	/**
+	 * 运行mvn操作命令
+	 * @param logManageEntity
+	 * @return
+	 */
 	public Mono<ResInfoBean> runCom(LogManageMongoEntity logManageEntity){
 		return logManagerEntityTransformBean(logManageEntity)
 			   .doOnNext(info->runMvncom(info))
 			   .flatMap(info-> Mono.just(new ResInfoBean(0,"runMvncom is ok",info)))
 			   .onErrorResume(e-> Mono.just(new ResInfoBean(1,"runMvncom is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
+	}
+	
+	/**
+	 * 判断文件是否可以运行
+	 * @param logFileBean
+	 * @return
+	 */
+	public Mono<ResInfoBean> canCom(LogManageMongoEntity logManageEntity){
+		return logManagerEntityTransformBean(logManageEntity)
+				.flatMap(info->{
+					File _srcDist=new File(info.getObjPath()+"\\"+info.getMvnCom());
+					Mono<ResInfoBean> resInfoBean=null;
+					if(_srcDist.exists())
+						resInfoBean=Mono.just(new ResInfoBean(0,"canCom is ok",info));
+					else
+						resInfoBean=Mono.just(new ResInfoBean(1,"canCom is not",info));
+					return resInfoBean;
+				});
 	}
 	
 	/**

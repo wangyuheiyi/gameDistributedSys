@@ -27,12 +27,14 @@ public class RouterConfig {
 				 .andRoute(GET("/findByGameCodeMongo/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCodeMongo)
 				 .andRoute(POST("/deleteLogManager").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogManager)
 				 .andRoute(POST("/saveInfoMongo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfoMongo)
+				 .andRoute(POST("/findBylogManage/").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManage)
 				 .andRoute(GET("/findBylogBean/{logManageId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManageId)
 				 .andRoute(POST("/saveLogBean").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogBean)
 				 .andRoute(POST("/deleteLogBean").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogBean)
 				 .andRoute(GET("/findBylogField/{logBeanId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogFieldByBeanId)
 				 .andRoute(POST("/saveLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogField)
 				 .andRoute(POST("/deleteLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogField)
-		 		 .andRoute(POST("/runMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::runMvnCom);
+		 		 .andRoute(POST("/runMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::runMvnCom)
+		 		 .andRoute(POST("/canMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::canMvnCom);
 	 }
 }

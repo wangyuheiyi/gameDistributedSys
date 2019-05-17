@@ -4,14 +4,15 @@ new Vue({
     el: '#managerInfo',
     data: {
     	panelvalue:"",
-    	name: "",
-    	isCreat:false,
-    	isCreatLog:false,
-    	dataInfo:Object,
+    	isCreat:false, //是否需要创建一个日志项目
+    	isCreatLog:false, //是否可以创建日志服务文件
+    	isCanRun:false, //是否可以执行命令
+    	mvnLoading:false,//执行命令的加载
+    	dataInfo:Object, //日志项目数据
     	tmpBeanIndex:1,
-    	logBeans:[],
+    	logBeans:[], //日志实体类数据
     	tmpFieldIndex:1,
-    	logFields:[]
+    	logFields:[] //日志实体类字段数据
     },
     mounted:function(){
     	var url = "/findByGameCodeMongo/"+gameCode;
@@ -29,6 +30,21 @@ new Vue({
         	_this= this;
         	axios.post(url,_this.dataInfo).then(function(result) {
         		var res=result.data;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        			_this.isCanRun=true;
+        		}else{
+        			_this.$Message.error(res.resStr);
+        			_this.isCanRun=false;
+        		}
+        	});
+        },
+        runMvnCom:function(){
+        	var url = "/runMvnCom/";
+        	_this= this;
+        	axios.post(url,_this.dataInfo).then(function(result) {
+        		var res=result.data;
+        		mvnLoading=true;
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
         		}else{
@@ -179,11 +195,25 @@ function reqAfterInfo(_this,result){
 		else{
 			_this.isCreat=false;
 			_this.isCreatLog=true;
-			getLogBeanInfo(_this,_this.dataInfo.id);
+			checkIsCanMvnRun(_this);
+			//getLogBeanInfo(_this,_this.dataInfo.id);
+			getLogBeanByManage(_this);
 		}
 	 }else{
 		 _this.$Message.error(res.resStr);
 	 }
+}
+
+function checkIsCanMvnRun(_this){
+	var url = "/canMvnCom/";
+	axios.post(url,_this.dataInfo).then(function(result) {
+		 var res=result.data;
+		 if(res.status == "0"){
+			 _this.isCanRun=true;
+		 }else{
+			 _this.isCanRun=false;
+		 }
+	});
 }
 
 //查询实体类
@@ -192,7 +222,22 @@ function getLogBeanInfo(_this,logManageId){
 	var url = "/findBylogBean/"+logManageId;
 	axios.get(url).then(function(result) {
 		for(var i=0;i<result.data.length;i++){
-			if(result.data[i].id!=null) _this.logBeans.push(result.data[i]);
+			if(result.data[i].beanName!=null) _this.logBeans.push(result.data[i]);
+		}
+	});
+}
+
+//查询实体类
+function getLogBeanByManage(_this){
+	_this.logBeans= [];
+	var url = "/findBylogManage/";
+	axios.post(url,_this.dataInfo).then(function(result) {
+		console.log(result.data);
+		for(var i=0;i<result.data.length;i++){
+			if(result.data[i].beanName!=null) {
+				console.log(result.data[i].beanName);
+				_this.logBeans.push(result.data[i]);
+			}
 		}
 	});
 }

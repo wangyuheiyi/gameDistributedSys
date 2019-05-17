@@ -139,6 +139,36 @@ public class LogManagerService {
 	}
 	
 	/**
+	 * 获取游戏对象的列表
+	 * @param logManageId
+	 * @return
+	 */
+	public Flux<LogBeanMongoEntity> findByLogManage(LogManageMongoEntity param){
+		return logBeanMongoRepository.findByLogManageId(param.getId())
+				//如果没有查询到就传经基础类
+		   		.defaultIfEmpty(initLogBeanMongoEntity(param))
+		   		.onErrorResume(e->{
+		   			logger.error(e.getMessage());
+		   			return Flux.just(new LogBeanMongoEntity());
+		   		});
+	}
+	
+	/**
+	 * 默认初始化一个基类
+	 * @param param
+	 * @return
+	 */
+	private LogBeanMongoEntity initLogBeanMongoEntity(LogManageMongoEntity param){
+		if(param.getBaseLogClassName()==null||"".equals(param.getBaseLogClassName())) return new LogBeanMongoEntity();
+		LogBeanMongoEntity logBeanMongoEntity=new LogBeanMongoEntity();
+		logBeanMongoEntity.setLogManageId(param.getId());
+		logBeanMongoEntity.setBeanName(param.getBaseLogClassName());
+		logBeanMongoEntity.setBeanDescribe("基类");
+		logBeanMongoEntity.setIsBaseBean("1");
+		return logBeanMongoEntity;
+	}
+	
+	/**
 	 * 保存日志实体对象
 	 * @param logBeanMongoEntity
 	 * @return

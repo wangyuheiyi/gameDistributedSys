@@ -32,6 +32,9 @@ public class LogManageMongoEntity {
 	/** 日志服名称*/
 	private String logservicename;
 	
+	/** 默认基类的名称*/
+	private String baseLogClassName;
+	
 	/** 发送服务项目名称*/
 	private String sendObjName;
 	
