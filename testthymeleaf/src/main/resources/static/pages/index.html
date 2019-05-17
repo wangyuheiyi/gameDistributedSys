@@ -112,76 +112,83 @@
 		      	</div>
 		      	<Divider></Divider>
 		      </Card>
-		      <Card title="日志文件" icon="md-list" :padding="0" shadow style="width: 100%;">
-		      	 <div style="padding:20px;">
-		      	 	<i-button type="info" @click="addlogBean">添加日志实体类</i-button>
-		      	 </div>
-		      	 <div style="padding:20px;">
-		      	 	<Collapse v-model="panelvalue" accordion v-for="logBean in logBeans" @on-change="collapseChange">
-		      	 		<Row type="flex" justify="start" align="middle" :gutter="16">
-					      		<i-col span="1">实体名:</i-col>
-					      		<i-col span="3">
-					      			<div v-if="logBean.isBaseBean==='1'">
-					      				<i-input  placeholder="" v-model="logBean.beanName" disabled></i-input>
-					      			</div>
-					      			<div v-else>
-					      				<i-input  placeholder="" v-model="logBean.beanName" clearable></i-input>
-					      			</div>
-					      		</i-col>
-		       					<i-col span="1">实体描述:</i-col>
-		       					<i-col span="3">
-		       						<div v-if="logBean.isBaseBean==='1'">
-					      				<i-input  placeholder="" v-model="logBean.beanDescribe" disabled></i-input>
-					      			</div>
-					      			<div v-else>
-					      				<i-input  placeholder="" v-model="logBean.beanDescribe" clearable></i-input>
-					      			</div>
-		       					</i-col>
-		       					<i-col span="1">基类名称:</i-col>
-		       					<i-col span="3">
-		       						<div v-if="logBean.isBaseBean==='1'">
-					      				<i-input  placeholder="" v-model="logBean.fatherBeanName" disabled></i-input>
-					      			</div>
-					      			<div v-else>
-					      				<i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input>
-					      			</div>
-		       					</i-col>
-		       					<!--<i-col span="1">是否基类:</i-col>
-		       					  <i-col span="2">
-		       						<Radio-group v-model="logBean.isBaseBean">
-									    <Radio label="0">否</Radio>
-									    <Radio label="1">是</Radio>
-									</Radio-group>
-								</i-col>-->
-		       					<i-col span="1">操作:</i-col>
-		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogBean(logBean)">删除</i-button></i-col>
-					    </Row>
-					    <Panel :name="logBean.beanName">
-					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
-					    	<p slot="content">
-					    		<i-button type="info" @click="addlogField(logBean.id)">添加实体字段</i-button>
-					    		<Divider orientation="left">字段内容</Divider>
-								<span v-for="logField in logFields">
-									<Divider orientation="left">fieldid:{{logField.id}}</Divider>
-									<Row type="flex" justify="start" align="middle" :gutter="15" >
-				      					<i-col span="1">类型:</i-col>
-				      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldType" clearable></i-input></i-col>
-				      					<i-col span="1">名称:</i-col>
-				      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldName" clearable></i-input></i-col>
-				      					<i-col span="1">大写名:</i-col>
-				      					<i-col span="2"><i-input  placeholder="" v-model="logField.bigName" clearable></i-input></i-col>
-				      					<i-col span="1">注释:</i-col>
-				      					<i-col span="2"><i-input  placeholder="" v-model="logField.comment" clearable></i-input></i-col>
-				      					<i-col span="1">操作:</i-col>
-				      					<i-col span="2"><i-button type="success" @click="saveLogField(logField)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogField(logField)">删除</i-button></i-col>
-									</Row>
-									<br>
-								</span>
-					    	</p>
-					    </Panel>
-				   </Collapse>
-		      	 </div>
-		      </Card>
+		      <Tabs type="card">
+		      	 <tab-pane label="标签一">
+			      <Card title="日志文件" icon="md-list" :padding="0" shadow style="width: 100%;">
+			      	 <div style="padding:20px;">
+			      	 	<i-button type="info" @click="addlogBean">添加日志实体类</i-button>
+			      	 </div>
+			      	 <div style="padding:20px;">
+			      	 	<Collapse v-model="panelvalue" accordion v-for="logBean in logBeans" @on-change="collapseChange">
+			      	 		<Row type="flex" justify="start" align="middle" :gutter="16">
+						      		<i-col span="1">实体名:</i-col>
+						      		<i-col span="3">
+						      			<div v-if="logBean.isBaseBean==='1'">
+						      				<i-input  placeholder="" v-model="logBean.beanName" disabled></i-input>
+						      			</div>
+						      			<div v-else>
+						      				<i-input  placeholder="" v-model="logBean.beanName" clearable></i-input>
+						      			</div>
+						      		</i-col>
+			       					<i-col span="1">实体描述:</i-col>
+			       					<i-col span="3">
+			       						<div v-if="logBean.isBaseBean==='1'">
+						      				<i-input  placeholder="" v-model="logBean.beanDescribe" disabled></i-input>
+						      			</div>
+						      			<div v-else>
+						      				<i-input  placeholder="" v-model="logBean.beanDescribe" clearable></i-input>
+						      			</div>
+			       					</i-col>
+			       					<i-col span="1">基类名称:</i-col>
+			       					<i-col span="3">
+			       						<div v-if="logBean.isBaseBean==='1'">
+						      				<i-input  placeholder="" v-model="logBean.fatherBeanName" disabled></i-input>
+						      			</div>
+						      			<div v-else>
+						      				<i-input  placeholder="" v-model="logBean.fatherBeanName" clearable></i-input>
+						      			</div>
+			       					</i-col>
+			       					<!--<i-col span="1">是否基类:</i-col>
+			       					  <i-col span="2">
+			       						<Radio-group v-model="logBean.isBaseBean">
+										    <Radio label="0">否</Radio>
+										    <Radio label="1">是</Radio>
+										</Radio-group>
+									</i-col>-->
+			       					<i-col span="1">操作:</i-col>
+			       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogBean(logBean)">删除</i-button></i-col>
+						    </Row>
+						    <Panel :name="logBean.beanName">
+						    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
+						    	<p slot="content">
+						    		<i-button type="info" @click="addlogField(logBean.id)">添加实体字段</i-button>
+						    		<Divider orientation="left">字段内容</Divider>
+									<span v-for="logField in logFields">
+										<Divider orientation="left">fieldid:{{logField.id}}</Divider>
+										<Row type="flex" justify="start" align="middle" :gutter="15" >
+					      					<i-col span="1">类型:</i-col>
+					      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldType" clearable></i-input></i-col>
+					      					<i-col span="1">名称:</i-col>
+					      					<i-col span="2"><i-input  placeholder="" v-model="logField.fieldName" clearable></i-input></i-col>
+					      					<i-col span="1">大写名:</i-col>
+					      					<i-col span="2"><i-input  placeholder="" v-model="logField.bigName" clearable></i-input></i-col>
+					      					<i-col span="1">注释:</i-col>
+					      					<i-col span="2"><i-input  placeholder="" v-model="logField.comment" clearable></i-input></i-col>
+					      					<i-col span="1">操作:</i-col>
+					      					<i-col span="2"><i-button type="success" @click="saveLogField(logField)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogField(logField)">删除</i-button></i-col>
+										</Row>
+										<br>
+									</span>
+						    	</p>
+						    </Panel>
+					   </Collapse>
+			      	 </div>
+			      </Card>
+			     </tab-pane>
+			     <tab-pane label="标签2">
+			     	wangyu
+			     </tab-pane>
+		      </Tabs>
 		    </div>
 	     </transition>
      	</div>
