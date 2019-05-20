@@ -1,41 +1,24 @@
 package com.dc.testthymeleaf.conf;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @ConfigurationProperties(prefix = "com.dc.logtool") 
 @Component
 public class MakeLogProperties {
 	private String outPutPath;
 	private String mainSrc;
+	private String mainResources;
 	private String targetPath;
-	public String getOutPutPath() {
-		return outPutPath;
-	}
-
-	
-	public void setOutPutPath(String outPutPath) {
-		this.outPutPath = outPutPath;
-	}
-
-
-	public String getMainSrc() {
-		return mainSrc;
-	}
-
-
-	public void setMainSrc(String mainSrc) {
-		this.mainSrc = mainSrc;
-	}
-
-
-	public String getTargetPath() {
-		return targetPath;
-	}
-
-
-	public void setTargetPath(String targetPath) {
-		this.targetPath = targetPath;
-	}
-	
+	private String servicePackage;
+	private String beanPackage;
+	private String daoPackage;
+	private String msgPackage;
 }

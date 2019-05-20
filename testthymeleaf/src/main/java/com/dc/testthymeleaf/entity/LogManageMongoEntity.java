@@ -34,21 +34,19 @@ public class LogManageMongoEntity {
 	
 	/** 默认基类的名称*/
 	private String baseLogClassName;
-	
+	/** 消息接收的公共通道*/
+	private String baseMsgChannelName;
+	/////////////////发送服务信息///////////////////
 	/** 发送服务项目名称*/
 	private String sendObjName;
-	
-	/** 发送服务中服务代码命名空间*/
-	private String sendServicePackage;
-	
-	/** 发送服务中实体类代码命名空间*/
-	private String sendBeanPackage;
+	/** 发送服根命名空间*/
+	private String sendBasePackage;
 	
 	/** 日志消息流的通道名*/
 	private String channelName;
 	/** 执行的命令文件*/
 	private String mvnCom;
-	/////////////////发送服务信息///////////////////
+	/////////////////发送服务版本信息///////////////////
 	/** 代码版本*/
 	private String codeVersion;
 	/** 代码GroupId*/
@@ -62,6 +60,38 @@ public class LogManageMongoEntity {
 	/** snapshot版本上传路径*/
 	private String snapshotMavenPath;
 	
+	/////////////////接收服务信息///////////////////
+	/** 接收服务项目名称*/
+	private String receiverObjName;
+	/** 接收服根命名空间*/
+	private String receiverBasePackage;
+	/** 接收服日志消息流的通道名*/
+	private String receiverChannelName;
+	/** 接收服执行的命令文件*/
+	private String receiverMvnCom;
+	/** 服务名称*/
+	private String receiverServerName;
+	/** 服务端口*/
+	private int receiverServerPort;
+	/////////////////接收服务版本信息///////////////////
+	/** 代码版本*/
+	private String receiverCodeVersion;
+	/** 代码GroupId*/
+	private String receiverCodeGroupId;
+	/** 代码ArtifactId*/
+	private String receiverCodeArtifactId;
+	/////////////////接收服务数据库信息///////////////////
+	/** 数据库地址*/
+	private String receiverDbUrl;
+	/////////////////接收服务消息信息///////////////////-
+	/** Rabbit地址*/
+	private String receiverRabbitmqHost;
+	/** Rabbit端口*/
+	private String receiverRabbitmqPort;
+	/** Rabbit用户名*/
+	private String receiverRabbitmqUsername;
+	/** Rabbit密码*/
+	private String receiverRabbitmqPassword;
 	@Override
 	public String toString(){
 		return "id:["+id+"],gamecode:["+gamecode+"],gamename["+gamename+"],logservicename["+logservicename+"]";

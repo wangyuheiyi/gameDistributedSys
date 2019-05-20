@@ -129,8 +129,8 @@ public class SendFileService {
 		LogManagerBean logFileBean=new LogManagerBean();
 		logFileBean.setId(logManageEntity.getId());
 		logFileBean.setObjName(logManageEntity.getSendObjName());
-		logFileBean.setServicePackage(logManageEntity.getSendServicePackage());
-		logFileBean.setBeanPackage(logManageEntity.getSendBeanPackage());
+		logFileBean.setServicePackage(logManageEntity.getSendBasePackage()+"."+makeLogProperties.getServicePackage());
+		logFileBean.setBeanPackage(logManageEntity.getSendBasePackage()+"."+makeLogProperties.getBeanPackage());
 		logFileBean.setBaseLogClassName(logManageEntity.getBaseLogClassName());
 		logFileBean.setObjPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getObjName());
 		logFileBean.setServicePath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getObjName()

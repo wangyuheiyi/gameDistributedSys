@@ -50,21 +50,19 @@
 			      		<i-col span="6"><i-input  placeholder="默认基类名称" v-model="dataInfo.baseLogClassName" clearable></i-input></i-col>
        					<i-col span="16"></i-col>
 			      	</Row>
+			      	<Row type="flex" class="code-row-bg" align="middle">
+			      		<i-col span="2">消息接收的公共信道：</i-col>
+			      		<i-col span="6"><i-input  placeholder="消息接收的公共信道" v-model="dataInfo.baseMsgChannelName" clearable></i-input></i-col>
+       					<i-col span="16"></i-col>
+			      	</Row>
 			      	<Divider orientation="left">发送接收信息</Divider>
 			      	<Tabs type="card">
 		      			<tab-pane label="发送服务信息">
 					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
 					      		<i-col span="2">发送服务项目名称：</i-col>
 					      		<i-col span="6"><i-input  placeholder="发送服务项目名称" v-model="dataInfo.sendObjName" clearable></i-input></i-col>
-					      		<i-col span="2">服务代码命名空间：</i-col>
-					      		<i-col span="6"><i-input  placeholder="发送服务中服务代码命名空间：" v-model="dataInfo.sendServicePackage" clearable></i-input></i-col>
-		       					<i-col span="8"></i-col>
-					      	</Row>
-					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
-					      		<i-col span="2">实体类代码命名空间：</i-col>
-					      		<i-col span="6"><i-input  placeholder="发送服务中实体类代码命名空间：" v-model="dataInfo.sendBeanPackage" clearable></i-input></i-col>
-					      		<i-col span="2">日志消息流的通道名：</i-col>
-					      		<i-col span="6"><i-input  placeholder="日志消息流的通道名：" v-model="dataInfo.channelName" clearable></i-input></i-col>
+					      		<i-col span="2">发送服根命名空间：</i-col>
+					      		<i-col span="6"><i-input  placeholder="发送服根命名空间：" v-model="dataInfo.sendBasePackage" clearable></i-input></i-col>
 		       					<i-col span="8"></i-col>
 					      	</Row>
 					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
@@ -91,11 +89,61 @@
 					      	<Row type="flex" class="code-row-bg" align="middle">
 					      		<i-col span="2">mavenId：</i-col>
 					      		<i-col span="6"><i-input  placeholder="与maven配置中的一致" v-model="dataInfo.mavenId" clearable></i-input></i-col>
-		       					<i-col span="16"></i-col>
+		       					<i-col span="2">日志消息流的通道名：</i-col>
+					      		<i-col span="6"><i-input  placeholder="日志消息流的通道名：" v-model="dataInfo.channelName" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
 					      	</Row>
 				     	</tab-pane>
 				     	<tab-pane label="接收服务信息">
-					     	wangyu
+					     	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">接收服务项目名称：</i-col>
+					      		<i-col span="6"><i-input  placeholder="接收服务项目名称" v-model="dataInfo.receiverObjName" clearable></i-input></i-col>
+					      		<i-col span="2">接收根命名空间：</i-col>
+					      		<i-col span="6"><i-input  placeholder="接收根命名空间" v-model="dataInfo.receiverBasePackage" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">接收服日志消息流的通道名：</i-col>
+					      		<i-col span="6"><i-input  placeholder="接收服日志消息流的通道名" v-model="dataInfo.receiverChannelName" clearable></i-input></i-col>
+					      		<i-col span="2">接收服执行的命令文件：</i-col>
+					      		<i-col span="6"><i-input  placeholder="接收服执行的命令文件" v-model="dataInfo.receiverMvnCom" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">服务名称：</i-col>
+					      		<i-col span="6"><i-input  placeholder="服务名称" v-model="dataInfo.receiverServerName" clearable></i-input></i-col>
+					      		<i-col span="2">服务端口：</i-col>
+					      		<i-col span="6"><i-input  placeholder="服务端口" v-model="dataInfo.receiverServerPort" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">代码版本：</i-col>
+					      		<i-col span="6"><i-input  placeholder="代码版本" v-model="dataInfo.receiverCodeVersion" clearable></i-input></i-col>
+					      		<i-col span="2">代码GroupId：</i-col>
+					      		<i-col span="6"><i-input  placeholder="代码GroupId" v-model="dataInfo.receiverCodeGroupId" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">代码ArtifactId：</i-col>
+					      		<i-col span="6"><i-input  placeholder="代码版本" v-model="dataInfo.receiverCodeArtifactId" clearable></i-input></i-col>
+					      		<i-col span="2">receiverDbUrl：</i-col>
+					      		<i-col span="6"><i-input  placeholder="mongodb://username:password@host:port/dbname" v-model="dataInfo.receiverDbUrl" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">Rabbit地址：</i-col>
+					      		<i-col span="6"><i-input  placeholder="Rabbit地址" v-model="dataInfo.receiverRabbitmqHost" clearable></i-input></i-col>
+					      		<i-col span="2">Rabbit端口：</i-col>
+					      		<i-col span="6"><i-input  placeholder="Rabbit端口" v-model="dataInfo.receiverRabbitmqPort" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">Rabbit用户名：</i-col>
+					      		<i-col span="6"><i-input  placeholder="Rabbit用户名" v-model="dataInfo.receiverRabbitmqUsername" clearable></i-input></i-col>
+					      		<i-col span="2">Rabbit密码：</i-col>
+					      		<i-col span="6"><i-input  placeholder="Rabbit密码" v-model="dataInfo.receiverRabbitmqPassword" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
 					    </tab-pane>
 				    </Tabs>
 		      	</div>
