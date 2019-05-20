@@ -56,7 +56,7 @@ new Vue({
 
         },
         saveInfo: function () {
-        	var url = "/saveInfoMongo/";
+        	var url = "/saveLogManager/";
         	_this= this;
         	axios.post(url,_this.dataInfo).then(function(result) {
         		reqAfterInfo(_this,result);

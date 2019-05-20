@@ -29,7 +29,7 @@ public class RouterConfig {
 				 //logmanager数据信息操作
 				 .andRoute(GET("/findByGameCodeMongo/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCodeMongo)
 				 .andRoute(POST("/deleteLogManager").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogManager)
-				 .andRoute(POST("/saveInfoMongo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogManager)
+				 .andRoute(POST("/saveLogManager").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogManager)
 				 .andRoute(POST("/findBylogManage/").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManage)
 				 //logBean数据信息处理
 				 .andRoute(GET("/findBylogBean/{logManageId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManageId)
