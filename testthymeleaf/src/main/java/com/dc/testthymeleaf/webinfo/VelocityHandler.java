@@ -66,10 +66,10 @@ public class VelocityHandler {
 	 * @param serverRequest
 	 * @return
 	 */
-	public Mono<ServerResponse> saveInfoMongo(ServerRequest serverRequest){
+	public Mono<ServerResponse> saveLogManager(ServerRequest serverRequest){
 		return serverRequest.bodyToMono(LogManageMongoEntity.class)
 		.flatMap(param-> ok().contentType(MediaType.APPLICATION_STREAM_JSON).
-				body(logManagerService.saveInfoByMongo(param), ResInfoBean.class));
+				body(logManagerService.saveLogManager(param), ResInfoBean.class));
 	}
 	
 	/**

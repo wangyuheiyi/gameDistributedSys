@@ -86,7 +86,7 @@ public class LogManagerService {
 	 * @param param
 	 * @return
 	 */
-	public Mono<ResInfoBean> saveInfoByMongo(LogManageMongoEntity param){
+	public Mono<ResInfoBean> saveLogManager(LogManageMongoEntity param){
 		return logManageMongoRepository.save(param)
 				.flatMap(info-> Mono.just(new ResInfoBean(0,"save is ok",info)))
 				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"save is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));

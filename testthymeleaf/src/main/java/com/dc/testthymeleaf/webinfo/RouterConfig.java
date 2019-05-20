@@ -22,18 +22,24 @@ public class RouterConfig {
 		 
 		 return route(GET("/init").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::initInfo)
 				 .andRoute(POST("/creatLog").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::creatLogManagerFile)
+				  //mysql数据库处理
 				 .andRoute(GET("/findByGameCode/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCode)
 				 .andRoute(POST("/saveInfo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfo)
+				 //mongo数据库处理
+				 //logmanager数据信息操作
 				 .andRoute(GET("/findByGameCodeMongo/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCodeMongo)
 				 .andRoute(POST("/deleteLogManager").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogManager)
-				 .andRoute(POST("/saveInfoMongo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfoMongo)
+				 .andRoute(POST("/saveInfoMongo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogManager)
 				 .andRoute(POST("/findBylogManage/").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManage)
+				 //logBean数据信息处理
 				 .andRoute(GET("/findBylogBean/{logManageId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogBeanByManageId)
 				 .andRoute(POST("/saveLogBean").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogBean)
 				 .andRoute(POST("/deleteLogBean").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogBean)
+				 //logfield数据信息处理
 				 .andRoute(GET("/findBylogField/{logBeanId}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getLogFieldByBeanId)
 				 .andRoute(POST("/saveLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveLogField)
 				 .andRoute(POST("/deleteLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogField)
+				 //发送服务自动打包上传操作
 		 		 .andRoute(POST("/runMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::runMvnCom)
 		 		 .andRoute(POST("/canMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::canMvnCom);
 	 }
