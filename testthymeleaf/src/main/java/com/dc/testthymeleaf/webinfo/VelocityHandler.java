@@ -16,8 +16,9 @@ import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 import com.dc.testthymeleaf.mytest.TestVelocity;
-import com.dc.testthymeleaf.service.SendFileService;
 import com.dc.testthymeleaf.service.LogManagerService;
+import com.dc.testthymeleaf.service.ReceiverFileService;
+import com.dc.testthymeleaf.service.SendFileService;
 
 @Component
 public class VelocityHandler {
@@ -30,9 +31,9 @@ public class VelocityHandler {
 	@Autowired
 	SendFileService sendFileService;
 	
-	public Mono<ServerResponse> creatFile(ServerRequest serverRequest) {
-		return ok().contentType(MediaType.TEXT_PLAIN).body(testVelocity.makeFile(),String.class);
-	}
+	@Autowired
+	ReceiverFileService receiverFileService;
+	
 	
 	public Mono<ServerResponse> initInfo(ServerRequest serverRequest){
 		Mono<String> initInfo=Mono.just("wangyu");
@@ -173,14 +174,25 @@ public class VelocityHandler {
 	}
 	
 	/**
-	 * 创建日志文件
+	 * 创建发送服务日志文件
 	 * @param serverRequest
 	 * @return
 	 */
-	public Mono<ServerResponse> creatLogManagerFile(ServerRequest serverRequest){
+	public Mono<ServerResponse> creatSendFile(ServerRequest serverRequest){
 		return serverRequest.bodyToMono(LogManageMongoEntity.class)
 				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
 						body(sendFileService.creatSendObjFile(param), ResInfoBean.class));
+	}
+	
+	/**
+	 * 创建接收服务日志文件
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> creatReceiverFile(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(receiverFileService.creatReceiverObjFile(param), ResInfoBean.class));
 	}
 	
 	/**

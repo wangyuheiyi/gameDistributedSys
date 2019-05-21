@@ -21,7 +21,8 @@ public class RouterConfig {
 //				 .andRoute(RequestPredicates.GET("/creatFile").and(predicatesAccept), velocityHandler::creatFile);
 		 
 		 return route(GET("/init").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::initInfo)
-				 .andRoute(POST("/creatLog").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::creatLogManagerFile)
+				 .andRoute(POST("/creatSendFile").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::creatSendFile)
+				 .andRoute(POST("/creatReceiverFile").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::creatReceiverFile)
 				  //mysql数据库处理
 				 .andRoute(GET("/findByGameCode/{gameCode}").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::getInfoByGameCode)
 				 .andRoute(POST("/saveInfo").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::saveInfo)

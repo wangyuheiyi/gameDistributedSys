@@ -24,11 +24,7 @@
 			      		<i-col span="2">数据id:</i-col>
 			      		<i-col span="6">{{dataInfo.id}}</i-col>
        					<i-col span="2">数据库自动生成id</i-col>
-       					<i-col span="13"><i-button type="info" @click="creatLog" v-if="isCreatLog">生成文件</i-button><Divider type="vertical"></Divider>
-      					<i-button type="info" @click="runMvnCom" :loading="mvnLoading" v-if="isCanRun">
-      						<span v-if="!mvnLoading">执行文件</span>
-       						<span v-else>Loading...</span>
-      					</i-button></i-col>
+       					<i-col span="14"></i-col>
 			      	</Row>
 			      	<Row class="code-row-bg">
 			      		<i-col span="2">游戏码:</i-col>
@@ -93,6 +89,13 @@
 					      		<i-col span="6"><i-input  placeholder="日志消息流的通道名：" v-model="dataInfo.channelName" clearable></i-input></i-col>
 		       					<i-col span="8"></i-col>
 					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle">
+					      		<i-col span="24"><i-button type="info" @click="creatSendFile" v-if="isCreatLog">生成发送文件</i-button><Divider type="vertical"></Divider>
+		      					<i-button type="info" @click="runMvnCom" :loading="mvnLoading" v-if="isCanRun">
+		      						<span v-if="!mvnLoading">执行文件</span>
+		       						<span v-else>Loading...</span>
+		      					</i-button></i-col>
+					      	</Row>
 				     	</tab-pane>
 				     	<tab-pane label="接收服务信息">
 					     	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
@@ -143,6 +146,13 @@
 					      		<i-col span="2">Rabbit密码：</i-col>
 					      		<i-col span="6"><i-input  placeholder="Rabbit密码" v-model="dataInfo.receiverRabbitmqPassword" clearable></i-input></i-col>
 		       					<i-col span="8"></i-col>
+					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle">
+					      		<i-col span="24"><i-button type="info" @click="creatReceiverFile" v-if="isCreatLog">生成接收文件</i-button><Divider type="vertical"></Divider>
+		      					<i-button type="info" @click="runMvnCom" :loading="mvnLoading" v-if="isCanRun">
+		      						<span v-if="!mvnLoading">执行文件</span>
+		       						<span v-else>Loading...</span>
+		      					</i-button></i-col>
 					      	</Row>
 					    </tab-pane>
 				    </Tabs>

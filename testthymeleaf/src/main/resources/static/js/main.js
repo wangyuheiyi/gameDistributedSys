@@ -25,8 +25,22 @@ new Vue({
     	creatNew: function () {
     		this.isCreat=false;
         },
-        creatLog: function (){
-        	var url = "/creatLog/";
+        creatSendFile: function (){
+        	var url = "/creatSendFile/";
+        	_this= this;
+        	axios.post(url,_this.dataInfo).then(function(result) {
+        		var res=result.data;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        			_this.isCanRun=true;
+        		}else{
+        			_this.$Message.error(res.resStr);
+        			_this.isCanRun=false;
+        		}
+        	});
+        },
+        creatReceiverFile: function (){
+        	var url = "/creatReceiverFile/";
         	_this= this;
         	axios.post(url,_this.dataInfo).then(function(result) {
         		var res=result.data;

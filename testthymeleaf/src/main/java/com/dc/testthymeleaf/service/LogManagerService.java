@@ -18,6 +18,7 @@ import com.dc.testthymeleaf.entity.GameLogManageEntity;
 import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
+import com.dc.testthymeleaf.util.LogUtil;
 
 /**
  * 日志管理数据库操作
@@ -28,6 +29,10 @@ import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 public class LogManagerService {
 
 	private static Logger logger=LoggerFactory.getLogger(TestthymeleafApplication.class);
+	
+	@Autowired
+	LogUtil util;
+	
 	/** jpamysql*/
 	@Autowired 
 	IGameLogManageRepository gameLogManageRepository;
@@ -159,7 +164,7 @@ public class LogManagerService {
 	 * @return
 	 */
 	private LogBeanMongoEntity initLogBeanMongoEntity(LogManageMongoEntity param){
-		if(param.getBaseLogClassName()==null||"".equals(param.getBaseLogClassName())) return new LogBeanMongoEntity();
+		if(util.isStrNullOrEmpty(param.getBaseLogClassName())) return new LogBeanMongoEntity();
 		LogBeanMongoEntity logBeanMongoEntity=new LogBeanMongoEntity();
 		logBeanMongoEntity.setLogManageId(param.getId());
 		logBeanMongoEntity.setBeanName(param.getBaseLogClassName());
