@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,6 +20,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "logfield")
+@CompoundIndexes({
+    //name：索引名称 def：字段(1正序 -1倒序) unique：是否唯一索引
+	//直接加到字段上面没用
+    @CompoundIndex(name = "uq_id_name", def = "{logBeanId:1, fieldName:-1}", unique = true)
+})
 public class LogFieldMongoEntity {
 	@Id
     private String id;
@@ -29,7 +36,6 @@ public class LogFieldMongoEntity {
 	private String fieldType;
 	
 	/** 字段名称*/
-	@Indexed(unique = true)
 	private String fieldName;
 	
 	/** 字段名字大写字母*/

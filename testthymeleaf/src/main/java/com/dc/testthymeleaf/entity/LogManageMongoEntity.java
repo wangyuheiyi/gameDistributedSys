@@ -83,7 +83,7 @@ public class LogManageMongoEntity {
 	/////////////////接收服务数据库信息///////////////////
 	/** 数据库地址*/
 	private String receiverDbUrl;
-	/////////////////接收服务消息信息///////////////////-
+	/////////////////接收服务消息信息///////////////////
 	/** Rabbit地址*/
 	private String receiverRabbitmqHost;
 	/** Rabbit端口*/
