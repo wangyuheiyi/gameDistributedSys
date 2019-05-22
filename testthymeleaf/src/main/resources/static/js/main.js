@@ -7,6 +7,7 @@ new Vue({
     	isCreat:false, //是否需要创建一个日志项目
     	isCreatLog:false, //是否可以创建日志服务文件
     	isCanRun:false, //是否可以执行命令
+    	isReceiverCanRun:false, //是否可以执行命令
     	mvnLoading:false,//执行命令的加载
     	dataInfo:Object, //日志项目数据
     	tmpBeanIndex:1,
@@ -46,10 +47,10 @@ new Vue({
         		var res=result.data;
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
-        			_this.isCanRun=true;
+        			_this.isReceiverCanRun=true;
         		}else{
         			_this.$Message.error(res.resStr);
-        			_this.isCanRun=false;
+        			_this.isReceiverCanRun=false;
         		}
         	});
         },
@@ -68,6 +69,21 @@ new Vue({
         		}
         	});
 
+        },
+        runReceiverMvnCom:function(){
+        	this.mvnLoading=true;
+        	var url = "/runReceiverMvnCom/";
+        	_this= this;
+        	axios.post(url,_this.dataInfo).then(function(result) {
+        		console.log(result);
+        		var res=result.data;
+        		_this.mvnLoading=false;
+        		if(res.status == "0"){
+        			_this.$Message.success(res.resStr);
+        		}else{
+        			_this.$Message.error(res.resStr);
+        		}
+        	});
         },
         saveInfo: function () {
         	var url = "/saveLogManager/";
@@ -213,6 +229,7 @@ function reqAfterInfo(_this,result){
 			_this.isCreat=false;
 			_this.isCreatLog=true;
 			checkIsCanMvnRun(_this);
+			checkIsReceiverCanMvnRun(_this);
 			//getLogBeanInfo(_this,_this.dataInfo.id);
 			getLogBeanByManage(_this);
 		}
@@ -229,6 +246,18 @@ function checkIsCanMvnRun(_this){
 			 _this.isCanRun=true;
 		 }else{
 			 _this.isCanRun=false;
+		 }
+	});
+}
+
+function checkIsReceiverCanMvnRun(_this){
+	var url = "/canReceiverMvnCom/";
+	axios.post(url,_this.dataInfo).then(function(result) {
+		 var res=result.data;
+		 if(res.status == "0"){
+			 _this.isReceiverCanRun=true;
+		 }else{
+			 _this.isReceiverCanRun=false;
 		 }
 	});
 }

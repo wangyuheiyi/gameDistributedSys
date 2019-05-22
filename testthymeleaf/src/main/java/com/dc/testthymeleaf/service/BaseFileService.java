@@ -1,8 +1,10 @@
 package com.dc.testthymeleaf.service;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -172,8 +174,8 @@ public class BaseFileService {
 	 * 生成maven运行文件
 	 * @param logFileBean
 	 */
-	protected void creatMvnComdFile(LogManagerBean logFileBean,String str){
-		File mvnComFile=new File(logFileBean.getSendObjPath(),logFileBean.getSendMvnCom());
+	protected void creatMvnComdFile(String outputPath,String fileName,String str){
+		File mvnComFile=new File(outputPath,fileName);
 		VelocityContext _mvnComContext=new VelocityContext();
 		try {
 			creatFile(_mvnComContext,str,mvnComFile);
@@ -181,5 +183,44 @@ public class BaseFileService {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
+	}
+	
+	/**
+	 * 执行命令语句
+	 * @param logFileBean
+	 * @return
+	 */
+	protected void runMvncom(String mvnCom,String objPath){
+		 logger.info("mvnCom=========["+mvnCom+"],objPath============["+objPath+"]");
+		logger.info("start mvncommond");
+		if(util.isStrNullOrEmpty(mvnCom)){
+			throw new RuntimeException("commond file is null");
+		}
+		Process ps=null;
+		BufferedReader br =null;
+		try { 
+			//去项目的指定目录执行命令
+			File dir = new File(objPath);
+            ps = Runtime.getRuntime().exec(objPath+"\\"+mvnCom,null,dir);
+            br = new BufferedReader(new InputStreamReader(ps.getInputStream()));  
+            StringBuffer sb = new StringBuffer();  
+            String line;  
+            while ((line = br.readLine()) != null) {  
+                sb.append(line).append("\n");  
+            }  
+            String result = sb.toString();  
+            logger.info("mvncmd=========["+result+"]");
+            }   
+        catch (Exception e) {  
+        	logger.error("runMvncom error :"+e.getMessage());
+            throw new RuntimeException("mvnCom error"+e.getMessage());
+        }finally{
+        	try {
+				br.close();
+			} catch (IOException e) {
+				logger.error("runMvncom error :"+e.getMessage());
+				throw new RuntimeException("mvnCom error"+e.getMessage());
+			}
+        }
 	}
 }

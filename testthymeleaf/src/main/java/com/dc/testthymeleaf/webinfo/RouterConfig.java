@@ -42,6 +42,8 @@ public class RouterConfig {
 				 .andRoute(POST("/deleteLogField").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::deleteLogField)
 				 //发送服务自动打包上传操作
 		 		 .andRoute(POST("/runMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::runMvnCom)
-		 		 .andRoute(POST("/canMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::canMvnCom);
+		 		 .andRoute(POST("/runReceiverMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::runReceiverMvnCom)
+		 		 .andRoute(POST("/canMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::canMvnCom)
+		 		 .andRoute(POST("/canReceiverMvnCom").and(accept(MediaType.APPLICATION_JSON)), velocityHandler::canReceiverMvnCom);
 	 }
 }

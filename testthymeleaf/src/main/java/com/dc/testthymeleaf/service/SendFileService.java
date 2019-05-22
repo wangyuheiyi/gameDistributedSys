@@ -35,7 +35,7 @@ public class SendFileService extends BaseFileService {
 		.doOnNext(info->creatFilePath(info)) //创建文件夹
 		.doOnNext(info->generateLogManageByTempl(info)) //生成发送服务器的服务类
 		.doOnNext(info->creatPomFile(info)) //生成pom文件
-		.doOnNext(info->creatMvnComdFile(info,"/templates/mvncmd.vm")) //生成mvncomd文件
+		.doOnNext(info->creatMvnComdFile(info.getSendObjPath(),info.getSendMvnCom(),"/templates/mvncmd.vm")) //生成mvncomd文件
 		.flatMap(info->{return logManagerService.findByLogManageId(info.getId()).flatMap(logFile->LogBeanEntityTransformBean(info,logFile)).collectList();})//获取日志对象实体
 		.doOnNext(logFileList->getLogFieldBean(logFileList))//将日志对象字段封装进日志对象中，生成所有实体类
 		.flatMap(info-> Mono.just(new ResInfoBean(0,"creat send file is ok",info)))
@@ -172,7 +172,7 @@ public class SendFileService extends BaseFileService {
 	 */
 	public Mono<ResInfoBean> runCom(LogManageMongoEntity logManageEntity){
 		return logManagerEntityTransformBean(logManageEntity)
-			   .doOnNext(info->runMvncom(info))
+			   .doOnNext(info->runMvncom(info.getSendMvnCom(),info.getSendObjPath()))
 			   .flatMap(info-> Mono.just(new ResInfoBean(0,"runMvncom is ok",info)))
 			   .onErrorResume(e-> Mono.just(new ResInfoBean(1,"runMvncom is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
 	}
@@ -193,44 +193,5 @@ public class SendFileService extends BaseFileService {
 						resInfoBean=Mono.just(new ResInfoBean(1,"canCom is not",info));
 					return resInfoBean;
 				});
-	}
-	
-	/**
-	 * 执行命令语句
-	 * @param logFileBean
-	 * @return
-	 */
-	private LogManagerBean runMvncom(LogManagerBean logFileBean){
-		logger.info("start mvncommond");
-		if(logFileBean.getSendMvnCom()==null||logFileBean.getSendMvnCom().equals("")){
-			throw new RuntimeException("commond file is null");
-		}
-		Process ps=null;
-		BufferedReader br =null;
-		try { 
-			//去项目的指定目录执行命令
-			File dir = new File(logFileBean.getSendObjPath());
-            ps = Runtime.getRuntime().exec(logFileBean.getSendObjPath()+"\\"+logFileBean.getSendMvnCom(),null,dir);
-            br = new BufferedReader(new InputStreamReader(ps.getInputStream()));  
-            StringBuffer sb = new StringBuffer();  
-            String line;  
-            while ((line = br.readLine()) != null) {  
-                sb.append(line).append("\n");  
-            }  
-            String result = sb.toString();  
-            logger.info("mvncmd=========["+result+"]");
-            }   
-        catch (Exception e) {  
-        	logger.error("runMvncom error :"+e.getMessage());
-            throw new RuntimeException("mvnCom error"+e.getMessage());
-        }finally{
-        	try {
-				br.close();
-			} catch (IOException e) {
-				logger.error("runMvncom error :"+e.getMessage());
-				throw new RuntimeException("mvnCom error"+e.getMessage());
-			}
-        }  
-		return logFileBean;
 	}
 }

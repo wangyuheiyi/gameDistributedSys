@@ -33,7 +33,7 @@ public class ReceiverFileService extends BaseFileService{
 				.doOnNext(info->creatFilePath(info)) //创建文件夹
 				.doOnNext(info->generateReceiverByTempl(info)) //生成基础文件
 				.doOnNext(info->creatConfFile(info)) //生成pom文件
-				.doOnNext(info->creatMvnComdFile(info,"/templates/receiver/mvncmd.vm"))//生成命令文件
+				.doOnNext(info->creatMvnComdFile(info.getReceiverObjPath(),info.getReceiverMvnCom(),"/templates/receiver/mvncmd.vm"))//生成命令文件
 				.flatMap(info->{return logManagerService.findByLogManageId(info.getId())
 						.flatMap(logFile->LogBeanEntityTransformBean(info,logFile))
 						.doOnNext(logFile->generateReceiverDaoByTempl(info,logFile)).collectList()
@@ -220,5 +220,35 @@ public class ReceiverFileService extends BaseFileService{
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
+	}
+	
+	/**
+	 * 运行mvn操作命令
+	 * @param logManageEntity
+	 * @return
+	 */
+	public Mono<ResInfoBean> runCom(LogManageMongoEntity logManageEntity){
+		return logManagerEntityTransformBean(logManageEntity)
+			   .doOnNext(info->runMvncom(info.getReceiverMvnCom(),info.getReceiverObjPath()))
+			   .flatMap(info-> Mono.just(new ResInfoBean(0,"runMvncom is ok",info)))
+			   .onErrorResume(e-> Mono.just(new ResInfoBean(1,"runMvncom is error ! :["+e.getMessage()+"]",new LogManageMongoEntity())));
+	}
+	
+	/**
+	 * 判断文件是否可以运行
+	 * @param logFileBean
+	 * @return
+	 */
+	public Mono<ResInfoBean> canCom(LogManageMongoEntity logManageEntity){
+		return logManagerEntityTransformBean(logManageEntity)
+				.flatMap(info->{
+					File _srcDist=new File(info.getReceiverObjPath()+"\\"+info.getReceiverMvnCom());
+					Mono<ResInfoBean> resInfoBean=null;
+					if(_srcDist.exists())
+						resInfoBean=Mono.just(new ResInfoBean(0,"canCom is ok",info));
+					else
+						resInfoBean=Mono.just(new ResInfoBean(1,"canCom is not",info));
+					return resInfoBean;
+				});
 	}
 }

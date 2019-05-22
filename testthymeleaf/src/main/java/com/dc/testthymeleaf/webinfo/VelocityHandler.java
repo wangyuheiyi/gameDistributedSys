@@ -207,6 +207,17 @@ public class VelocityHandler {
 	}
 	
 	/**
+	 * 运行mvn数据
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> runReceiverMvnCom(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(receiverFileService.runCom(param), ResInfoBean.class));
+	}
+	
+	/**
 	 * 运行命令操作
 	 * @param serverRequest
 	 * @return
@@ -215,5 +226,16 @@ public class VelocityHandler {
 		return serverRequest.bodyToMono(LogManageMongoEntity.class)
 				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
 						body(sendFileService.canCom(param), ResInfoBean.class));
+	}
+	
+	/**
+	 * 判断运行命令操作
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> canReceiverMvnCom(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(LogManageMongoEntity.class)
+				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+						body(receiverFileService.canCom(param), ResInfoBean.class));
 	}
 }

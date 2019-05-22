@@ -149,8 +149,8 @@
 					      	</Row>
 					      	<Row type="flex" class="code-row-bg" align="middle">
 					      		<i-col span="24"><i-button type="info" @click="creatReceiverFile" v-if="isCreatLog">生成接收文件</i-button><Divider type="vertical"></Divider>
-		      					<i-button type="info" @click="runMvnCom" :loading="mvnLoading" v-if="isCanRun">
-		      						<span v-if="!mvnLoading">执行文件</span>
+		      					<i-button type="info" @click="runReceiverMvnCom" :loading="mvnLoading" v-if="isReceiverCanRun">
+		      						<span v-if="!mvnLoading">编译接收项目文件</span>
 		       						<span v-else>Loading...</span>
 		      					</i-button></i-col>
 					      	</Row>
