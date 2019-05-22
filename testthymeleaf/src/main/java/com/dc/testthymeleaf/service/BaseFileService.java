@@ -167,4 +167,19 @@ public class BaseFileService {
 			if(_fileWriter!=null) _fileWriter.close();
 		}
 	}
+	
+	/**
+	 * 生成maven运行文件
+	 * @param logFileBean
+	 */
+	protected void creatMvnComdFile(LogManagerBean logFileBean,String str){
+		File mvnComFile=new File(logFileBean.getSendObjPath(),logFileBean.getSendMvnCom());
+		VelocityContext _mvnComContext=new VelocityContext();
+		try {
+			creatFile(_mvnComContext,str,mvnComFile);
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+		}
+	}
 }

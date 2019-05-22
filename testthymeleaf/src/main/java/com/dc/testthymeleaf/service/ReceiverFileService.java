@@ -32,7 +32,8 @@ public class ReceiverFileService extends BaseFileService{
 				.publishOn(Schedulers.elastic()) //切换到io线程操作
 				.doOnNext(info->creatFilePath(info)) //创建文件夹
 				.doOnNext(info->generateReceiverByTempl(info)) //生成基础文件
-				.doOnNext(info->creatPomFile(info)) //生成pom文件
+				.doOnNext(info->creatConfFile(info)) //生成pom文件
+				.doOnNext(info->creatMvnComdFile(info,"/templates/receiver/mvncmd.vm"))//生成命令文件
 				.flatMap(info->{return logManagerService.findByLogManageId(info.getId())
 						.flatMap(logFile->LogBeanEntityTransformBean(info,logFile))
 						.doOnNext(logFile->generateReceiverDaoByTempl(info,logFile)).collectList()
@@ -60,10 +61,10 @@ public class ReceiverFileService extends BaseFileService{
 	}
 	
 	/**
-	 * 生成pom文件
+	 * 生成一些配置文件文件
 	 * @param logFileBean
 	 */
-	private void creatPomFile(LogManagerBean logFileBean){
+	private void creatConfFile(LogManagerBean logFileBean){
 		//生成pom文件
 		VelocityContext _pomContext=new VelocityContext();
 		_pomContext.put("codeGroupId", logFileBean.getReceiverCodeGroupId());
@@ -71,8 +72,30 @@ public class ReceiverFileService extends BaseFileService{
 		_pomContext.put("codeVersion", logFileBean.getReceiverCodeVersion());
 		_pomContext.put("objName", logFileBean.getReceiverObjName());
 		File pomFile=new File(logFileBean.getReceiverObjPath(),"pom.xml");
+		
+		//生成Dockerfile文件
+		VelocityContext _dockerFileContext=new VelocityContext();
+		_dockerFileContext.put("receiverCodeArtifactId", logFileBean.getReceiverCodeArtifactId());
+		_dockerFileContext.put("receiverCodeVersion", logFileBean.getReceiverCodeVersion());
+		_dockerFileContext.put("receiverServerPort", logFileBean.getReceiverServerPort());
+		File dockerFile=new File(logFileBean.getReceiverObjPath(),"Dockerfile");
+		
+		//生成application.properties文件
+		VelocityContext _applicationpropertContext=new VelocityContext();
+		_applicationpropertContext.put("receiverServerPort", logFileBean.getReceiverServerPort());
+		_applicationpropertContext.put("receiverServerName", logFileBean.getReceiverServerName());
+		_applicationpropertContext.put("receiverDbUrl", logFileBean.getReceiverDbUrl());
+		_applicationpropertContext.put("receiverRabbitmqHost", logFileBean.getReceiverRabbitmqHost());
+		_applicationpropertContext.put("receiverRabbitmqPort", logFileBean.getReceiverRabbitmqPort());
+		_applicationpropertContext.put("receiverRabbitmqUsername", logFileBean.getReceiverRabbitmqUsername());
+		_applicationpropertContext.put("receiverRabbitmqPassword", logFileBean.getReceiverRabbitmqPassword());
+		_applicationpropertContext.put("receiverChannelName", logFileBean.getReceiverChannelName());
+		_applicationpropertContext.put("baseMsgChannelName", logFileBean.getBaseChannelName());
+		File applicationpropertFile=new File(logFileBean.getReceiverResourcesPath(),"application.properties");
 		try {
 			creatFile(_pomContext,"/templates/receiver/pom.vm",pomFile);
+			creatFile(_dockerFileContext,"/templates/receiver/dockerFile.vm",dockerFile);
+			creatFile(_applicationpropertContext,"/templates/receiver/application.properties.vm",applicationpropertFile);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());

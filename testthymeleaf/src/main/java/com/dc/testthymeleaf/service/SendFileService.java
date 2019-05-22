@@ -35,7 +35,7 @@ public class SendFileService extends BaseFileService {
 		.doOnNext(info->creatFilePath(info)) //创建文件夹
 		.doOnNext(info->generateLogManageByTempl(info)) //生成发送服务器的服务类
 		.doOnNext(info->creatPomFile(info)) //生成pom文件
-		.doOnNext(info->creatMvnComdFile(info)) //生成mvncomd文件
+		.doOnNext(info->creatMvnComdFile(info,"/templates/mvncmd.vm")) //生成mvncomd文件
 		.flatMap(info->{return logManagerService.findByLogManageId(info.getId()).flatMap(logFile->LogBeanEntityTransformBean(info,logFile)).collectList();})//获取日志对象实体
 		.doOnNext(logFileList->getLogFieldBean(logFileList))//将日志对象字段封装进日志对象中，生成所有实体类
 		.flatMap(info-> Mono.just(new ResInfoBean(0,"creat send file is ok",info)))
@@ -70,21 +70,6 @@ public class SendFileService extends BaseFileService {
 		File pomFile=new File(logFileBean.getSendObjPath(),"pom.xml");
 		try {
 			creatFile(_pomContext,"/templates/pom.vm",pomFile);
-		} catch (IOException e) {
-			logger.error(e.getMessage());
-			throw new RuntimeException(e.getMessage());
-		}
-	}
-	
-	/**
-	 * 生成maven运行文件
-	 * @param logFileBean
-	 */
-	private void creatMvnComdFile(LogManagerBean logFileBean){
-		File mvnComFile=new File(logFileBean.getSendObjPath(),logFileBean.getSendMvnCom());
-		VelocityContext _mvnComContext=new VelocityContext();
-		try {
-			creatFile(_mvnComContext,"/templates/mvncmd.vm",mvnComFile);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
