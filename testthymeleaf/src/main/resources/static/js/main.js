@@ -68,7 +68,6 @@ new Vue({
         			_this.$Message.error(res.resStr);
         		}
         	});
-
         },
         runReceiverMvnCom:function(){
         	this.mvnLoading=true;
