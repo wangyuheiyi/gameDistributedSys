@@ -54,6 +54,7 @@ public class ReceiverFileService extends BaseFileService{
 		if(!util.creatFilePathByStr(logFileBean.getReceiverBeanPath())) throw new RuntimeException("Can't create dir");
 		if(!util.creatFilePathByStr(logFileBean.getReceiverDaoPath())) throw new RuntimeException("Can't create dir");
 		if(!util.creatFilePathByStr(logFileBean.getReceiverMsgPath())) throw new RuntimeException("Can't create dir");
+		if(!util.creatFilePathByStr(logFileBean.getReceiverWebPath())) throw new RuntimeException("Can't create dir");
 		//创建生成文件的路径
 		if(!util.creatFilePathByStr(logFileBean.getReceiverTargetPath())) throw new RuntimeException("Can't create dir");
 		//创建配置文件路径
@@ -157,6 +158,7 @@ public class ReceiverFileService extends BaseFileService{
 		for(LogFileBean logFileBean:logFileBeans){
 			if(!logFileBean.isBaseBean()) tmplogFileBeans.add(logFileBean);
 		}
+		//对应服务类生成
 		VelocityContext _Servicecontext=new VelocityContext();
 		_Servicecontext.put("packageName",logManagerBean.getReceiverServicePackage());
 		_Servicecontext.put("basePackage",logManagerBean.getReceiverBasePackage());
@@ -164,6 +166,7 @@ public class ReceiverFileService extends BaseFileService{
 		_Servicecontext.put("daoPackage",logManagerBean.getReceiverDaoPackage());
 		_Servicecontext.put("logFiles",tmplogFileBeans);
 		File serviceFile=new File(logManagerBean.getReceiverServicePath(),"SaveInfoService.java");
+		//接受消息的类生成
 		VelocityContext _Sinkcontext=new VelocityContext();
 		_Sinkcontext.put("packageName",logManagerBean.getReceiverMsgPackage());
 		_Sinkcontext.put("basePackage",logManagerBean.getReceiverBasePackage());
@@ -171,9 +174,22 @@ public class ReceiverFileService extends BaseFileService{
 		_Sinkcontext.put("servicePackage",logManagerBean.getReceiverServicePackage());
 		_Sinkcontext.put("logFiles",tmplogFileBeans);
 		File sinkFile=new File(logManagerBean.getReceiverMsgPath(),"SinkReceiver.java");
+		//页面处理handler生成
+		VelocityContext _Handlercontext=new VelocityContext();
+		_Handlercontext.put("packageName",logManagerBean.getReceiverWebPackage());
+		_Handlercontext.put("servicePackage",logManagerBean.getReceiverServicePackage());
+		_Handlercontext.put("logFiles",tmplogFileBeans);
+		File handlerFile=new File(logManagerBean.getReceiverWebPath(),"LogInfoHandler.java");
+		//页面路由类生成
+		VelocityContext _Routercontext=new VelocityContext();
+		_Routercontext.put("packageName",logManagerBean.getReceiverWebPackage());
+		_Routercontext.put("logFiles",tmplogFileBeans);
+		File routerconFile=new File(logManagerBean.getReceiverWebPath(),"ReceiverRouterConfig.java");
 		try {
 			creatFile(_Servicecontext,"/templates/receiver/ReceiverServiceClass.vm",serviceFile);
 			creatFile(_Sinkcontext,"/templates/receiver/ReceiverSinkClass.vm",sinkFile);
+			creatFile(_Handlercontext,"/templates/receiver/ReceiverHandlerClass.vm",handlerFile);
+			creatFile(_Routercontext,"/templates/receiver/ReceiverRouterClass.vm",routerconFile);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());

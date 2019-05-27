@@ -1,4 +1,4 @@
 FROM java:8
-ADD ${receiverCodeArtifactId}-${receiverCodeVersion}.jar /app.jar
+ADD ${receiverCodeArtifactId}-${receiverCodeVersion}.jar /${receiverCodeArtifactId}.jar
 EXPOSE $receiverServerPort
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/${receiverCodeArtifactId}.jar"]

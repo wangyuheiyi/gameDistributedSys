@@ -21,4 +21,5 @@ public class MakeLogProperties {
 	private String beanPackage;
 	private String daoPackage;
 	private String msgPackage;
+	private String webPackage;
 }

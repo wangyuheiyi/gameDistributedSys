@@ -70,6 +70,8 @@ public class LogManagerBean {
 	private String receiverDaoPackage;
 	/** 接收服msg命名空间*/
 	private String receiverMsgPackage;
+	/** 接收服web服务命名空间*/
+	private String receiverWebPackage;
 	/** 接收服根代码路径*/
 	private String receiverBasePath;
 	/** 接收服务代码路径*/
@@ -80,6 +82,8 @@ public class LogManagerBean {
 	private String receiverDaoPath;
 	/** 接收服msg代码路径*/
 	private String receiverMsgPath;
+	/** 接收服web服务代码路径*/
+	private String receiverWebPath;
 	/** 接收服生成路径路径*/
 	private String receiverTargetPath;
 	/** 接收服生成路径路径*/

@@ -21,6 +21,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
 		</dependency>
@@ -61,7 +65,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
 			<!--3：将Docker镜像push到DockerHub上-->
 			<!-- docker的maven插件，官网：https://github.com/spotify/docker-maven-plugin -->
 			<plugin>
@@ -71,8 +74,10 @@
 			    	<!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 --> 
 					<!-- 详见：https://github.com/spotify/docker-maven-plugin Invalid repository name ... only [a-z0-9-_.] are allowed -->
 					<!-- 如果要将docker镜像push到DockerHub上去的话，这边的路径要和repo路径一致 --> 
-					<!--<imageName>${docker.image.prefix}/${project.artifactId}</imageName>-->
-					<imageName>testSaveInfoByMag-maven-docker</imageName>
+					<serverId>docker-registry</serverId>
+					<pushImage>true</pushImage>
+					<imageName>111.230.26.190:5000/${project.artifactId}:${project.version}</imageName>
+					<dockerHost>http://111.230.26.190:2375</dockerHost>
 					<!-- 指定Dockerfile所在的路径 --> 
 					<dockerDirectory>${basedir}/src/main/resources</dockerDirectory>
 					<resources> 
