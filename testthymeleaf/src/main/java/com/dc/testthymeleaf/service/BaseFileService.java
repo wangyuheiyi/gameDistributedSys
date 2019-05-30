@@ -108,6 +108,8 @@ public class BaseFileService {
 		logFileBean.setReceiverRabbitmqPort(logManageEntity.getReceiverRabbitmqPort());
 		logFileBean.setReceiverRabbitmqUsername(logManageEntity.getReceiverRabbitmqUsername());
 		logFileBean.setReceiverRabbitmqPassword(logManageEntity.getReceiverRabbitmqPassword());
+		logFileBean.setReceiverDockerHost(logManageEntity.getReceiverDockerHost());
+		logFileBean.setReceiverDockerPort(logManageEntity.getReceiverDockerPort());
 		return Mono.just(logFileBean);
 	}
 	

@@ -147,6 +147,13 @@
 					      		<i-col span="6"><i-input  placeholder="Rabbit密码" v-model="dataInfo.receiverRabbitmqPassword" clearable></i-input></i-col>
 		       					<i-col span="8"></i-col>
 					      	</Row>
+					      	<Row type="flex" class="code-row-bg" align="middle" :gutter="15">
+					      		<i-col span="2">docker地址：</i-col>
+					      		<i-col span="6"><i-input  placeholder="docker地址" v-model="dataInfo.receiverDockerHost" clearable></i-input></i-col>
+					      		<i-col span="2">docker端口：</i-col>
+					      		<i-col span="6"><i-input  placeholder="docker端口" v-model="dataInfo.receiverDockerPort" clearable></i-input></i-col>
+		       					<i-col span="8"></i-col>
+					      	</Row>
 					      	<Row type="flex" class="code-row-bg" align="middle">
 					      		<i-col span="24"><i-button type="info" @click="creatReceiverFile" v-if="isCreatLog">生成接收文件</i-button><Divider type="vertical"></Divider>
 		      					<i-button type="info" @click="runReceiverMvnCom" :loading="mvnLoading" v-if="isReceiverCanRun">

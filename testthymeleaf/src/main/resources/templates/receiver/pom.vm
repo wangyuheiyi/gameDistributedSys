@@ -76,8 +76,8 @@
 					<!-- 如果要将docker镜像push到DockerHub上去的话，这边的路径要和repo路径一致 --> 
 					<serverId>docker-registry</serverId>
 					<pushImage>true</pushImage>
-					<imageName>111.230.26.190:5000/${project.artifactId}:${project.version}</imageName>
-					<dockerHost>http://111.230.26.190:2375</dockerHost>
+					<imageName>$receiverDockerHost:$receiverDockerPort/${project.artifactId}:${project.version}</imageName>
+					<dockerHost>http://$receiverDockerHost:2375</dockerHost>
 					<!-- 指定Dockerfile所在的路径 --> 
 					<dockerDirectory>${basedir}/src/main/resources</dockerDirectory>
 					<resources> 

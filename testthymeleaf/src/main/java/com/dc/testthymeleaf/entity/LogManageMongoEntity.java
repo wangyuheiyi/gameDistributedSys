@@ -92,6 +92,11 @@ public class LogManageMongoEntity {
 	private String receiverRabbitmqUsername;
 	/** Rabbit密码*/
 	private String receiverRabbitmqPassword;
+	/////////////////docker上传地址///////////////////
+	/**项目docker镜像上传的地址*/
+	private String receiverDockerHost;
+	/**项目docker镜像上传的端口*/
+	private String receiverDockerPort;
 	@Override
 	public String toString(){
 		return "id:["+id+"],gamecode:["+gamecode+"],gamename["+gamename+"],logservicename["+logservicename+"]";
