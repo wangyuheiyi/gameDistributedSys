@@ -81,7 +81,7 @@ public class ReceiverFileService extends BaseFileService{
 		_dockerFileContext.put("receiverCodeArtifactId", logFileBean.getReceiverCodeArtifactId());
 		_dockerFileContext.put("receiverCodeVersion", logFileBean.getReceiverCodeVersion());
 		_dockerFileContext.put("receiverServerPort", logFileBean.getReceiverServerPort());
-		File dockerFile=new File(logFileBean.getReceiverObjPath(),"Dockerfile");
+		File dockerFile=new File(logFileBean.getReceiverResourcesPath(),"Dockerfile");
 		
 		//生成application.properties文件
 		VelocityContext _applicationpropertContext=new VelocityContext();
