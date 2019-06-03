@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="managerInfo">
-		<div style="padding: 20px;background: #f8f8f9">
+		<div style="padding: 5px;background: #f8f8f9">
 	 	<transition name="fade">
 	     	<i-button type="info" @click="creatNew" v-if="isCreat">添加数据</i-button>
 		    <div v-else>
@@ -185,7 +185,7 @@
 					      				<i-input  placeholder="" v-model="logBean.beanName" clearable></i-input>
 					      			</div>
 					      		</i-col>
-		       					<i-col span="1">实体描述:</i-col>
+		       					<i-col span="1">描述:</i-col>
 		       					<i-col span="3">
 		       						<div v-if="logBean.isBaseBean==='1'">
 					      				<i-input  placeholder="" v-model="logBean.beanDescribe" disabled></i-input>
@@ -194,7 +194,7 @@
 					      				<i-input  placeholder="" v-model="logBean.beanDescribe" clearable></i-input>
 					      			</div>
 		       					</i-col>
-		       					<i-col span="1">基类名称:</i-col>
+		       					<i-col span="1">基类名:</i-col>
 		       					<i-col span="3">
 		       						<div v-if="logBean.isBaseBean==='1'">
 					      				<i-input  placeholder="" v-model="logBean.fatherBeanName" disabled></i-input>
@@ -211,7 +211,7 @@
 									</Radio-group>
 								</i-col>-->
 		       					<i-col span="1">操作:</i-col>
-		       					<i-col span="2"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogBean(logBean)">删除</i-button></i-col>
+		       					<i-col span="3"><i-button type="success" @click="saveLogBean(logBean)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogBean(logBean)">删除</i-button></i-col>
 					    </Row>
 					    <Panel :name="logBean.beanName">
 					    	{{logBean.beanName}}<Divider type="vertical"></Divider> 实体id:{{logBean.id}}
@@ -230,7 +230,7 @@
 				      					<i-col span="1">注释:</i-col>
 				      					<i-col span="2"><i-input  placeholder="" v-model="logField.comment" clearable></i-input></i-col>
 				      					<i-col span="1">操作:</i-col>
-				      					<i-col span="2"><i-button type="success" @click="saveLogField(logField)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogField(logField)">删除</i-button></i-col>
+				      					<i-col span="3"><i-button type="success" @click="saveLogField(logField)">保存</i-button><Divider type="vertical"></Divider><i-button type="error" @click="deleteLogField(logField)">删除</i-button></i-col>
 									</Row>
 									<br>
 								</span>

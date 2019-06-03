@@ -3,7 +3,8 @@ var gameCode=6;
 new Vue({
     el: '#mainInfo',
     data: {
-    	isCollapsed: false
+    	isCollapsed: false,
+    	reportUrl:'index.html'
     },
     computed: {
     	rotateIcon:function() {
