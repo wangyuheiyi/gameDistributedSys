@@ -41,7 +41,7 @@
    .menu-item span{
        display: inline-block;
        overflow: hidden;
-       width: 69px;
+       width: 85px;
        text-overflow: ellipsis;
        white-space: nowrap;
        vertical-align: bottom;
@@ -66,7 +66,7 @@
 </style>
 	<div id="mainInfo" class="layout">
 	 <Layout>
-		<Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+		<Sider ref="side1" hide-trigger collapsible :collapsed-width="90" v-model="isCollapsed">
 		    <i-menu active-name="logManager" theme="dark" width="auto" :class="menuitemClasses">
 		        <Menu-item name="logManager">
 		            <Icon type="ios-navigate"></Icon>
@@ -77,14 +77,12 @@
 		                <Icon type="ios-search"></Icon>
 		                <span>日志查看</span>
 		            </template>
-			        <Menu-item name="1-2">
-			            <Icon type="ios-search"></Icon>
-			            <span>Option 2</span>
-			        </Menu-item>
-			        <Menu-item name="1-3">
-			            <Icon type="ios-settings"></Icon>
-			            <span>Option 3</span>
-			        </Menu-item>
+		            <div v-for="logBean in logBeans">
+			            <Menu-item :name="logBean.beanName">
+				            <Icon type="ios-search"></Icon>
+				            <span>{{logBean.beanDescribe}}</span>
+				        </Menu-item>
+		            </div>
 		        </Submenu>
 		    </i-menu>
 		</Sider>
@@ -92,7 +90,7 @@
                 <i-header :style="{padding: 0}" class="layout-header-bar">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 10px'}" type="md-menu" size="24"></Icon>
                 </i-header>
-                <i-content :style="{background: '#fff', minHeight: '500px'}">
+                <i-content :style="{background: '#fff', minHeight: '900px'}">
                    <iframe name = "contentInfo" id = "contentInfo" v-bind:src="reportUrl"
 				   width="100%" height="90%" frameborder="0" scrolling="yes">
 				   </iframe>

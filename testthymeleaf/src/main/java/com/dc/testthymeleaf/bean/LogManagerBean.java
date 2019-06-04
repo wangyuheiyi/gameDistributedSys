@@ -106,8 +106,8 @@ public class LogManagerBean {
 	private String receiverRabbitmqPassword;
 	/**项目docker镜像上传的地址*/
 	private String receiverDockerHost;
-	/**项目docker镜像上传的端口*/
-	private String receiverDockerPort;
+	/**接受服务查询地址*/
+	private String receiverSearchHost;
 	@Override
 	public String toString(){
 		return "sendObjName:["+sendObjName+"],sendObjPath:["+sendObjPath+"],sendServicePackage:["+sendServicePackage

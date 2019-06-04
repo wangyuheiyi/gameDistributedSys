@@ -1,9 +1,9 @@
-var gameCode=6;
 //主方法
-new Vue({
+var mainInfoApp=new Vue({
     el: '#mainInfo',
     data: {
     	isCollapsed: false,
+    	logBeans:[],
     	reportUrl:'index.html'
     },
     computed: {
@@ -26,3 +26,16 @@ new Vue({
         }
     }
 });
+
+
+function addMenuList(menuInfo){
+	console.log(menuInfo);
+	if(menuInfo.isBaseBean!="1") mainInfoApp.logBeans.push(menuInfo);
+}
+
+function delMenuList(menuInfo){
+	for(var i=0;i<mainInfoApp.logBeans.length;i++){
+		if(mainInfoApp.logBeans[i].beanName==menuInfo.beanName)
+			Vue.delete(mainInfoApp.logBeans,i);
+	}
+}

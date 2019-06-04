@@ -1,4 +1,5 @@
 var gameCode=6;
+var gameName='测试游戏';
 //主方法
 new Vue({
     el: '#managerInfo',
@@ -127,8 +128,10 @@ new Vue({
         		if(res.status == "0"){
         			_this.$Message.success(res.resStr);
         			for(var i=0;i<_this.logBeans.length;i++){
-            			if(_this.logBeans[i].beanName==res.resDate.beanName)
+            			if(_this.logBeans[i].beanName==res.resDate.beanName){
             				Vue.set(_this.logBeans,i,res.resDate);
+            				window.parent.addMenuList(res.resDate);
+            			}
             		}
         		}else{
         			_this.$Message.error(res.resStr);
@@ -138,8 +141,10 @@ new Vue({
         deleteLogBean: function(logBean){
         	if(logBean.id==null){
         		for(var i=0;i<_this.logBeans.length;i++){
-        			if(_this.logBeans[i].beanName==logBean.beanName)
+        			if(_this.logBeans[i].beanName==logBean.beanName){
         				Vue.delete(_this.logBeans,i);
+        				
+        			}
         		}
         	}else{
         		var url = "/deleteLogBean/";
@@ -149,8 +154,10 @@ new Vue({
             		if(res.status == "0"){
             			_this.$Message.success(res.resStr);
             			for(var i=0;i<_this.logBeans.length;i++){
-                			if(_this.logBeans[i].beanName==logBean.beanName)
+                			if(_this.logBeans[i].beanName==logBean.beanName){
+                				window.parent.delMenuList(_this.logBeans[i]);
                 				Vue.delete(_this.logBeans,i);
+                			}
                 		}
             		}else{
             			_this.$Message.error(res.resStr);
@@ -222,7 +229,7 @@ function reqAfterInfo(_this,result){
 			_this.isCreat=true;
 			_this.isCreatLog=false;
 			_this.dataInfo.gamecode=gameCode;
-    		_this.dataInfo.gamename='临时';
+    		_this.dataInfo.gamename=gameName;
 		}
 		else{
 			_this.isCreat=false;
@@ -279,6 +286,7 @@ function getLogBeanByManage(_this){
 	axios.post(url,_this.dataInfo).then(function(result) {
 		for(var i=0;i<result.data.length;i++){
 			if(result.data[i].beanName!=null) _this.logBeans.push(result.data[i]);
+			window.parent.addMenuList(result.data[i]);
 		}
 	});
 }

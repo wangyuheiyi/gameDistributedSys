@@ -95,8 +95,8 @@ public class LogManageMongoEntity {
 	/////////////////docker上传地址///////////////////
 	/**项目docker镜像上传的地址*/
 	private String receiverDockerHost;
-	/**项目docker镜像上传的端口*/
-	private String receiverDockerPort;
+	/**接受服务查询地址*/
+	private String receiverSearchHost;
 	@Override
 	public String toString(){
 		return "id:["+id+"],gamecode:["+gamecode+"],gamename["+gamename+"],logservicename["+logservicename+"]";

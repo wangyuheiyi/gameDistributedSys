@@ -73,7 +73,6 @@ public class ReceiverFileService extends BaseFileService{
 		_pomContext.put("codeVersion", logFileBean.getReceiverCodeVersion());
 		_pomContext.put("objName", logFileBean.getReceiverObjName());
 		_pomContext.put("receiverDockerHost", logFileBean.getReceiverDockerHost());
-		_pomContext.put("receiverDockerPort", logFileBean.getReceiverDockerPort());
 		File pomFile=new File(logFileBean.getReceiverObjPath(),"pom.xml");
 		
 		//生成Dockerfile文件
