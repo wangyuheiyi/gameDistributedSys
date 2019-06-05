@@ -10,7 +10,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import reactor.core.publisher.Mono;
 
-import com.dc.testthymeleaf.bean.ResInfoBean;
+import com.dc.testthymeleaf.bean.res.ResInfoBean;
+import com.dc.testthymeleaf.bean.res.TableColumnBean;
+import com.dc.testthymeleaf.bean.search.SearchInfoBean;
 import com.dc.testthymeleaf.entity.GameLogManageEntity;
 import com.dc.testthymeleaf.entity.LogBeanMongoEntity;
 import com.dc.testthymeleaf.entity.LogFieldMongoEntity;
@@ -237,5 +239,27 @@ public class VelocityHandler {
 		return serverRequest.bodyToMono(LogManageMongoEntity.class)
 				.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
 						body(receiverFileService.canCom(param), ResInfoBean.class));
+	}
+	
+	/**
+	 * 查询表头信息
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> searchColumnInfo(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(SearchInfoBean.class)
+		.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+				body(logManagerService.searchColumnInfo(param), TableColumnBean.class));
+	}
+	
+	/**
+	 * 查询数据信息
+	 * @param serverRequest
+	 * @return
+	 */
+	public Mono<ServerResponse> searchTableInfo(ServerRequest serverRequest){
+		return serverRequest.bodyToMono(SearchInfoBean.class)
+		.flatMap(param-> ok().contentType(MediaType.APPLICATION_JSON).
+				body(logManagerService.searchTableInfo(param), Object.class));
 	}
 }

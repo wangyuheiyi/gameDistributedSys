@@ -4,12 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import com.dc.testthymeleaf.TestthymeleafApplication;
-import com.dc.testthymeleaf.bean.ResInfoBean;
+import com.dc.testthymeleaf.bean.res.ResInfoBean;
+import com.dc.testthymeleaf.bean.res.TableColumnBean;
+import com.dc.testthymeleaf.bean.search.SearchInfoBean;
 import com.dc.testthymeleaf.dao.IGameLogManageRepository;
 import com.dc.testthymeleaf.dao.ILogBeanMongoRepository;
 import com.dc.testthymeleaf.dao.ILogFieldMongoRepository;
@@ -233,5 +236,21 @@ public class LogManagerService {
 	public Mono<ResInfoBean> deleteLogFieldMongo(LogFieldMongoEntity logFieldMongoEntity){
 		return lLogFieldMongoRepository.delete(logFieldMongoEntity).then(Mono.just(new ResInfoBean(0,"delete field is ok",Mono.empty())))
 				.onErrorResume(e-> Mono.just(new ResInfoBean(1,"delete field is error ! :["+e.getMessage()+"]",Mono.empty())));
+	}
+	
+	public Flux<TableColumnBean> searchColumnInfo(SearchInfoBean param){
+		if(param==null) return Flux.empty();
+		return lLogFieldMongoRepository.findByLogBeanId(param.getBaseBeanId())
+				.defaultIfEmpty(new LogFieldMongoEntity())
+				.concatWith(lLogFieldMongoRepository.findByLogBeanId(param.getParam()))
+				.flatMap(info->{
+					return Flux.just(new TableColumnBean(info.getComment(),info.getFieldName()));
+				});
+	}
+	
+	public Flux<Object> searchTableInfo(SearchInfoBean param){
+		if(param==null) return Flux.empty();
+		WebClient webClient = WebClient.create("http://"+param.getUrl());
+		return webClient.get().uri(param.getPath()).retrieve().bodyToFlux(Object.class);
 	}
 }

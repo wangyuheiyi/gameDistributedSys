@@ -68,7 +68,7 @@
 	 <Layout>
 		<Sider ref="side1" hide-trigger collapsible :collapsed-width="90" v-model="isCollapsed">
 		    <i-menu active-name="logManager" theme="dark" width="auto" :class="menuitemClasses">
-		        <Menu-item name="logManager">
+		        <Menu-item name="logManager" @click.native="jumptoPath('index.html')">
 		            <Icon type="ios-navigate"></Icon>
 		            <span>日志管理</span>
 		        </Menu-item>
@@ -78,7 +78,7 @@
 		                <span>日志查看</span>
 		            </template>
 		            <div v-for="logBean in logBeans">
-			            <Menu-item :name="logBean.beanName">
+			            <Menu-item :name="logBean.beanName" @click.native="searchLogInfo(logBean.beanName,logBean.id)">
 				            <Icon type="ios-search"></Icon>
 				            <span>{{logBean.beanDescribe}}</span>
 				        </Menu-item>

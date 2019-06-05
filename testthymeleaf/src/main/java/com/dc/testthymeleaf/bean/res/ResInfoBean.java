@@ -1,4 +1,4 @@
-package com.dc.testthymeleaf.bean;
+package com.dc.testthymeleaf.bean.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResInfoBean {
 	/** 请求状态*/
-	private int status;
+	protected int status;
 	/** 返回信息*/
-	private String resStr;
+	protected String resStr;
 	/** 返回数据*/
-	private Object resDate;
+	protected Object resDate;
 }

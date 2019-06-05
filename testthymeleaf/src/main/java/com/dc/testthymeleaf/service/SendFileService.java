@@ -15,7 +15,7 @@ import reactor.core.scheduler.Schedulers;
 
 import com.dc.testthymeleaf.bean.LogFileBean;
 import com.dc.testthymeleaf.bean.LogManagerBean;
-import com.dc.testthymeleaf.bean.ResInfoBean;
+import com.dc.testthymeleaf.bean.res.ResInfoBean;
 import com.dc.testthymeleaf.entity.LogManageMongoEntity;
 
 /**

@@ -4,7 +4,12 @@ var mainInfoApp=new Vue({
     data: {
     	isCollapsed: false,
     	logBeans:[],
-    	reportUrl:'index.html'
+    	searchUrl:"",
+    	baseBeanId:"",
+    	searchInfo:Object, //查询条件
+    	reportUrl:'index.html',
+    	tmpPath:"",
+    	tmpLogBeanId:"",
     },
     computed: {
     	rotateIcon:function() {
@@ -23,14 +28,36 @@ var mainInfoApp=new Vue({
     methods: {
         collapsedSider:function() {
         	this.$refs.side1.toggleCollapse();
-        }
+        },
+        jumptoPath:function(htmlPath){
+        	this.reportUrl=htmlPath;
+        },
+    	searchLogInfo:function(path,logBeanId){
+    		this.tmpPath=path;
+    		this.tmpLogBeanId=logBeanId;
+    		this.reportUrl='tableInfo.html';
+    	}
     }
 });
 
+function initHtmlInfo(){
+	document.getElementById("contentInfo").contentWindow.searchColumnInfo(mainInfoApp.searchUrl,mainInfoApp.tmpPath,mainInfoApp.baseBeanId,mainInfoApp.tmpLogBeanId);
+}
 
+function setSearchUrl(searchUrl){
+	mainInfoApp.searchUrl=searchUrl;
+}
+
+//添加一个菜单选项
 function addMenuList(menuInfo){
-	console.log(menuInfo);
-	if(menuInfo.isBaseBean!="1") mainInfoApp.logBeans.push(menuInfo);
+	if(menuInfo.isBaseBean=="1") {
+		mainInfoApp.baseBeanId=menuInfo.id;
+		return;
+	}
+	for(var i=0;i<mainInfoApp.logBeans.length;i++){
+		if(mainInfoApp.logBeans[i].beanName==menuInfo.beanName) return;
+	}
+	mainInfoApp.logBeans.push(menuInfo);
 }
 
 function delMenuList(menuInfo){

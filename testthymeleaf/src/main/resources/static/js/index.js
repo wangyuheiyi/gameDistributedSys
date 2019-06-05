@@ -230,14 +230,15 @@ function reqAfterInfo(_this,result){
 			_this.isCreatLog=false;
 			_this.dataInfo.gamecode=gameCode;
     		_this.dataInfo.gamename=gameName;
+    		window.parent.setSearchUrl("");
 		}
 		else{
 			_this.isCreat=false;
 			_this.isCreatLog=true;
 			checkIsCanMvnRun(_this);
 			checkIsReceiverCanMvnRun(_this);
-			//getLogBeanInfo(_this,_this.dataInfo.id);
 			getLogBeanByManage(_this);
+			window.parent.setSearchUrl(_this.dataInfo.receiverSearchHost);
 		}
 	 }else{
 		 _this.$Message.error(res.resStr);
