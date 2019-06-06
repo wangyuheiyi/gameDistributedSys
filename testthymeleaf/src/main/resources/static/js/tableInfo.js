@@ -6,6 +6,7 @@ var tableInfo=new Vue({
     	datas:[],
     },
     mounted:function(){
+    	console.log("initHtml");
     	window.parent.initHtmlInfo();
     },
     methods: {

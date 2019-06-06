@@ -35,6 +35,8 @@ var mainInfoApp=new Vue({
     	searchLogInfo:function(path,logBeanId){
     		this.tmpPath=path;
     		this.tmpLogBeanId=logBeanId;
+    		console.log(path);
+    		console.log(logBeanId);
     		this.reportUrl='tableInfo.html';
     	}
     }
