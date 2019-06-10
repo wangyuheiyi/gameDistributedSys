@@ -15,11 +15,17 @@ public class ReceiverRouterConfig {
 	@Autowired
 	private LogInfoHandler logInfoHandler;
 	
+	#set($logFilesCount = 0)
 	
 	 @Bean
      public RouterFunction<ServerResponse> receiverRouter() {
 		return #foreach($logFile in $logFiles)
+				  #if($logFilesCount==0)
 					route(GET("/get${logFile.beanName}").and(accept(MediaType.APPLICATION_JSON)), logInfoHandler::get${logFile.beanName}Info)
+				  #else
+				  	.andRoute(GET("/get${logFile.beanName}").and(accept(MediaType.APPLICATION_JSON)), logInfoHandler::get${logFile.beanName}Info)
+				  #end
+					#set( $logFilesCount = $logFilesCount + 1)
 				#end;
 	}
 	
