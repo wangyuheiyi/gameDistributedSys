@@ -3,6 +3,7 @@ var mainInfoApp=new Vue({
     el: '#mainInfo',
     data: {
     	isCollapsed: false,
+    	isInitTable: false,
     	logBeans:[],
     	searchUrl:"",
     	baseBeanId:"",
@@ -35,15 +36,16 @@ var mainInfoApp=new Vue({
     	searchLogInfo:function(path,logBeanId){
     		this.tmpPath=path;
     		this.tmpLogBeanId=logBeanId;
-    		console.log(path);
-    		console.log(logBeanId);
     		this.reportUrl='tableInfo.html';
+    		if(this.isInitTable)
+    			document.getElementById("contentInfo").contentWindow.location.reload();
     	}
     }
 });
 
 function initHtmlInfo(){
-	document.getElementById("contentInfo").contentWindow.searchColumnInfo(mainInfoApp.searchUrl,mainInfoApp.tmpPath,mainInfoApp.baseBeanId,mainInfoApp.tmpLogBeanId);
+		document.getElementById("contentInfo").contentWindow.searchColumnInfo(mainInfoApp.searchUrl,mainInfoApp.tmpPath,mainInfoApp.baseBeanId,mainInfoApp.tmpLogBeanId);
+		mainInfoApp.isInitTable=true;
 }
 
 function setSearchUrl(searchUrl){

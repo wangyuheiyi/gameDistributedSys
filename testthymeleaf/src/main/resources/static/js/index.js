@@ -143,7 +143,6 @@ new Vue({
         		for(var i=0;i<_this.logBeans.length;i++){
         			if(_this.logBeans[i].beanName==logBean.beanName){
         				Vue.delete(_this.logBeans,i);
-        				
         			}
         		}
         	}else{

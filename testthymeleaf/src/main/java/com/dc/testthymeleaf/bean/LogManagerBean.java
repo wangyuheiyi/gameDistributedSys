@@ -14,6 +14,9 @@ public class LogManagerBean {
 	/** 消息信道*/
 	private String baseChannelName;
 	
+	/** 项目文件根目录地址*/
+	private String baseFilePath;
+	
 	//////////////////发送服信息///////////////////////
 	/** 发送服项目名称*/
 	private String sendObjName;

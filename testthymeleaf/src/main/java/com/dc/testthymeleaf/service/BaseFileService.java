@@ -54,16 +54,17 @@ public class BaseFileService {
 		logFileBean.setId(logManageEntity.getId());
 		logFileBean.setBaseLogClassName(logManageEntity.getBaseLogClassName());
 		logFileBean.setBaseChannelName(logManageEntity.getBaseMsgChannelName());
+		logFileBean.setBaseFilePath(makeLogProperties.getOutPutPath()+"\\"+logManageEntity.getGamecode()+"\\"+logManageEntity.getLogservicename());
 		///////////////////发送服数据设置/////////////////////////
 		logFileBean.setSendObjName(logManageEntity.getSendObjName());
 		logFileBean.setSendServicePackage(logManageEntity.getSendBasePackage()+"."+makeLogProperties.getServicePackage());
 		logFileBean.setSendBeanPackage(logManageEntity.getSendBasePackage()+"."+makeLogProperties.getBeanPackage());
-		logFileBean.setSendObjPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getSendObjName());
-		logFileBean.setSendServicePath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getSendObjName()
+		logFileBean.setSendObjPath(logFileBean.getBaseFilePath()+"\\"+logFileBean.getSendObjName());
+		logFileBean.setSendServicePath(logFileBean.getSendObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getSendServicePackage().replaceAll("\\.","/"));
-		logFileBean.setSendBeanPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getSendObjName()
+		logFileBean.setSendBeanPath(logFileBean.getSendObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getSendBeanPackage().replaceAll("\\.","/"));
-		logFileBean.setSendTargetPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getSendObjName()+makeLogProperties.getTargetPath());
+		logFileBean.setSendTargetPath(logFileBean.getSendObjPath()+makeLogProperties.getTargetPath());
 		logFileBean.setSendChannelName(logManageEntity.getChannelName());
 		logFileBean.setSendMvnCom(logManageEntity.getMvnCom());
 		//maven数据
@@ -75,7 +76,7 @@ public class BaseFileService {
 		logFileBean.setSnapshotMavenPath(logManageEntity.getSnapshotMavenPath());
 		///////////////////接收服数据设置/////////////////////////
 		logFileBean.setReceiverObjName(logManageEntity.getReceiverObjName());
-		logFileBean.setReceiverObjPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName());
+		logFileBean.setReceiverObjPath(logFileBean.getBaseFilePath()+"\\"+logFileBean.getReceiverObjName());
 		logFileBean.setReceiverServerName(logManageEntity.getReceiverServerName());
 		logFileBean.setReceiverServerPort(logManageEntity.getReceiverServerPort());
 		logFileBean.setReceiverChannelName(logManageEntity.getReceiverChannelName());
@@ -86,20 +87,20 @@ public class BaseFileService {
 		logFileBean.setReceiverDaoPackage(logManageEntity.getReceiverBasePackage()+"."+makeLogProperties.getDaoPackage());
 		logFileBean.setReceiverMsgPackage(logManageEntity.getReceiverBasePackage()+"."+makeLogProperties.getMsgPackage());
 		logFileBean.setReceiverWebPackage(logManageEntity.getReceiverBasePackage()+"."+makeLogProperties.getWebPackage());
-		logFileBean.setReceiverBasePath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()
+		logFileBean.setReceiverBasePath(logFileBean.getReceiverObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getReceiverBasePackage().replaceAll("\\.","/"));
-		logFileBean.setReceiverServicePath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()
+		logFileBean.setReceiverServicePath(logFileBean.getReceiverObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getReceiverServicePackage().replaceAll("\\.","/"));
-		logFileBean.setReceiverBeanPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()
+		logFileBean.setReceiverBeanPath(logFileBean.getReceiverObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getReceiverBeanPackage().replaceAll("\\.","/"));
-		logFileBean.setReceiverDaoPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()
+		logFileBean.setReceiverDaoPath(logFileBean.getReceiverObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getReceiverDaoPackage().replaceAll("\\.","/"));
-		logFileBean.setReceiverMsgPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()
+		logFileBean.setReceiverMsgPath(logFileBean.getReceiverObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getReceiverMsgPackage().replaceAll("\\.","/"));
-		logFileBean.setReceiverWebPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()
+		logFileBean.setReceiverWebPath(logFileBean.getReceiverObjPath()
 				+makeLogProperties.getMainSrc()+"\\"+logFileBean.getReceiverWebPackage().replaceAll("\\.","/"));
-		logFileBean.setReceiverTargetPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()+makeLogProperties.getTargetPath());
-		logFileBean.setReceiverResourcesPath(makeLogProperties.getOutPutPath()+"\\"+logFileBean.getReceiverObjName()+makeLogProperties.getMainResources());
+		logFileBean.setReceiverTargetPath(logFileBean.getReceiverObjPath()+makeLogProperties.getTargetPath());
+		logFileBean.setReceiverResourcesPath(logFileBean.getReceiverObjPath()+makeLogProperties.getMainResources());
 		logFileBean.setReceiverCodeVersion(logManageEntity.getReceiverCodeVersion());
 		logFileBean.setReceiverCodeGroupId(logManageEntity.getReceiverCodeGroupId());
 		logFileBean.setReceiverCodeArtifactId(logManageEntity.getReceiverCodeArtifactId());
