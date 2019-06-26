@@ -259,7 +259,7 @@ public class ReceiverFileService extends BaseFileService{
 	public Mono<ResInfoBean> canCom(LogManageMongoEntity logManageEntity){
 		return logManagerEntityTransformBean(logManageEntity)
 				.flatMap(info->{
-					File _srcDist=new File(info.getReceiverObjPath()+"\\"+info.getReceiverMvnCom());
+					File _srcDist=new File(info.getReceiverObjPath()+makeLogProperties.getPathStep()+info.getReceiverMvnCom());
 					Mono<ResInfoBean> resInfoBean=null;
 					if(_srcDist.exists())
 						resInfoBean=Mono.just(new ResInfoBean(0,"canCom is ok",info));

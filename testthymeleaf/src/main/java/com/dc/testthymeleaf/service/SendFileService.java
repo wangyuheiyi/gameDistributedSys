@@ -183,7 +183,7 @@ public class SendFileService extends BaseFileService {
 	public Mono<ResInfoBean> canCom(LogManageMongoEntity logManageEntity){
 		return logManagerEntityTransformBean(logManageEntity)
 				.flatMap(info->{
-					File _srcDist=new File(info.getSendObjPath()+"\\"+info.getSendMvnCom());
+					File _srcDist=new File(info.getSendObjPath()+makeLogProperties.getPathStep()+info.getSendMvnCom());
 					Mono<ResInfoBean> resInfoBean=null;
 					if(_srcDist.exists())
 						resInfoBean=Mono.just(new ResInfoBean(0,"canCom is ok",info));

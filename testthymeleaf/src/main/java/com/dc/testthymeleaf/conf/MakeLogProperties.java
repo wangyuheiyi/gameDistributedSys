@@ -16,6 +16,7 @@ public class MakeLogProperties {
 	private String outPutPath;
 	private String mainSrc;
 	private String mainResources;
+	private String pathStep;
 	private String targetPath;
 	private String servicePackage;
 	private String beanPackage;
