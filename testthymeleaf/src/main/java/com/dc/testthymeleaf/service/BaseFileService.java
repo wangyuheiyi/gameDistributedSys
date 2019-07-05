@@ -207,6 +207,7 @@ public class BaseFileService {
 		try { 
 			//去项目的指定目录执行命令
 			File dir = new File(objPath);
+			ps = Runtime.getRuntime().exec("chmod -R 777 "+objPath+makeLogProperties.getPathStep()+mvnCom);
             ps = Runtime.getRuntime().exec(objPath+makeLogProperties.getPathStep()+mvnCom,null,dir);
             br = new BufferedReader(new InputStreamReader(ps.getInputStream()));  
             StringBuffer sb = new StringBuffer();  

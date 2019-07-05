@@ -1,4 +1,4 @@
-FROM wangyuheiyi/myalpine-java8:latest
+FROM wangyuheiyi/maven-docker-client:latest
 ADD testthymeleaf-0.0.1-SNAPSHOT.jar /testthymeleaf.jar
 RUN mkdir -p /data/myobj/output
 EXPOSE 8092
